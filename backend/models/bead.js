@@ -36,8 +36,6 @@ const beadSchema = new mongoose.Schema({
   },
 });
 
-// module.exports = mongoose.model("Bead", beadSchema);
-
 module.exports = {
   beadSchema,
   Bead: mongoose.model("Bead", beadSchema),

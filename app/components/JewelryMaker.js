@@ -47,29 +47,29 @@ const examplePaletteItems = [
   {
     id: "pink-butterfly",
     name: "🦋",
-    colour: "pink", 
+    colour: "pink",
     shape: "butterfly",
     diameter: 10,
     stock: 100,
-    image: "/images/pink-butterfly.png"
+    image: "/images/pink-butterfly.png",
   },
   {
-    id: "purple-heart", 
+    id: "purple-heart",
     name: "💖",
     colour: "purple",
     shape: "heart",
     diameter: 8,
     stock: 100,
-    image: "/images/purple-heart.png"
+    image: "/images/purple-heart.png",
   },
   {
     id: "blue-star",
     name: "✨",
     colour: "blue",
-    shape: "star", 
+    shape: "star",
     diameter: 12,
     stock: 100,
-    image: "/images/blue-star.png"
+    image: "/images/blue-star.png",
   },
   {
     id: "yellow-flower",
@@ -78,16 +78,16 @@ const examplePaletteItems = [
     shape: "flower",
     diameter: 15,
     stock: 100,
-    image: "/images/yellow-flower.png"
+    image: "/images/yellow-flower.png",
   },
   {
     id: "red-heart",
-    name: "❤️", 
+    name: "❤️",
     colour: "red",
     shape: "heart",
     diameter: 8,
     stock: 100,
-    image: "/images/red-heart.png"
+    image: "/images/red-heart.png",
   },
   {
     id: "white-circle",
@@ -96,17 +96,17 @@ const examplePaletteItems = [
     shape: "circle",
     diameter: 6,
     stock: 100,
-    image: "/images/white-circle.png"
+    image: "/images/white-circle.png",
   },
   {
     id: "black-cube",
     name: "⬛",
-    colour: "black", 
+    colour: "black",
     shape: "cube",
     diameter: 10,
     stock: 100,
-    image: "/images/black-cube.png"
-  }
+    image: "/images/black-cube.png",
+  },
 ];
 
 const JewelryMaker = () => {
@@ -138,29 +138,29 @@ const JewelryMaker = () => {
         image: item.image,
         diameter: item.diameter,
         colour: item.colour,
-        shape: item.shape
+        shape: item.shape,
       };
       return [newItem, ...prev];
     });
   };
 
   const handleOrderSubmit = async () => {
-    console.log(items);
-    // try {
-    //   const orderData = {
-    //     orderInfo: {
-    //       status: "pending",
-    //     },
-    //     customerInfo: {
-    //       email: "test",
-    //       address: "test",
-    //     },
-    //   };
+    try {
+      const orderData = {
+        orderInfo: {
+          status: "pending",
+          beads: items,
+        },
+        customerInfo: {
+          email: "test",
+          address: "test",
+        },
+      };
 
-    //   await orderService.createOrder(orderData);
-    // } catch (err) {
-    //   console.error("Error creating order:", err);
-    // }
+      await orderService.createOrder(orderData);
+    } catch (err) {
+      console.error("Error creating order:", err);
+    }
   };
 
   return (
@@ -211,11 +211,11 @@ const JewelryMaker = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[40px] flex items-center justify-around rounded-lg">
+      <div className="w-full h-[32px] flex items-center justify-around rounded-lg">
         <div className="w-full flex justify-center">
           <button
             onClick={handleOrderSubmit}
-            className="bg-primary text-background text-xl p-2 rounded-3xl"
+            className="bg-primary text-background text-xl p-2 px-4 rounded-3xl hover:bg-secondary ease-linear"
           >
             Order
           </button>

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const { beadSchema } = require("./bead");
 
 const orderSchema = new mongoose.Schema({
-
   orderInfo: {
     dateOrdered: {
       type: Date,
