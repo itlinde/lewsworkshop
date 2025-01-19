@@ -4,12 +4,11 @@ import Header from "./Header";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     orderService.getOrders().then((orders) => setOrders(orders));
   }, []);
-
-  console.log(orders);
 
   return (
     <>
@@ -43,12 +42,13 @@ const AdminOrders = () => {
             <div>Address</div>
             <div>Email</div>
             <div>Beads</div>
+            <div>Delete</div>
           </div>
 
           {orders.map((order) => (
             <div
               key={order._id}
-              className="p-4 grid grid-cols-6 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
+              className="p-4 grid grid-cols-7 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
             >
               <div className="break-words">{order._id}</div>
               <div className="break-words">{order.orderInfo.dateOrdered}</div>

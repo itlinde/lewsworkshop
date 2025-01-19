@@ -50,4 +50,16 @@ export const orderService = {
       throw err;
     }
   },
+
+  deleteOrder: async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/orders/${id}`, {
+        method: "DELETE",
+      });
+      return response.json();
+    } catch (err) {
+      console.error("Error deleting order:", err);
+      throw err;
+    }
+  },
 };
