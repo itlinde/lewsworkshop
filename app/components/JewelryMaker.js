@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DndContext } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -26,37 +26,87 @@ const SortableItem = ({ item }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-blue-500 p-4 mb-2 rounded cursor-pointer"
+      className="w-full flex justify-center items-center"
     >
-      Item {item.name}
+      <div className="w-[20%] flex justify-center items-center p-4 mb-2 rounded cursor-pointer bg-white aspect-square">
+        {item.name}
+      </div>
     </div>
   );
 };
 
 const examplePaletteItems = [
   {
-    id: "pink-butterfly", 
-    name: "🦋 Pink Butterfly",
+    id: "pink-butterfly",
+    name: "🦋",
     colour: "pink",
     shape: "butterfly",
   },
   {
     id: "purple-heart",
-    name: "💖 Purple Heart", 
+    name: "💖",
     colour: "purple",
     shape: "heart",
   },
   {
     id: "blue-star",
-    name: "✨ Blue Star",
-    colour: "blue", 
+    name: "✨",
+    colour: "blue",
     shape: "star",
   },
   {
     id: "yellow-flower",
-    name: "🌺 Yellow Flower",
+    name: "🌺",
     colour: "yellow",
     shape: "flower",
+  },
+  {
+    id: "red-rose",
+    name: "🌹",
+    colour: "red",
+    shape: "rose",
+  },
+  {
+    id: "orange-sun",
+    name: "☀️",
+    colour: "orange",
+    shape: "sun",
+  },
+  {
+    id: "green-leaf",
+    name: "🍃",
+    colour: "green",
+    shape: "leaf",
+  },
+  {
+    id: "blue-droplet",
+    name: "💧",
+    colour: "blue",
+    shape: "droplet",
+  },
+  {
+    id: "purple-crystal",
+    name: "💎",
+    colour: "purple",
+    shape: "crystal",
+  },
+  {
+    id: "pink-ribbon",
+    name: "🎀",
+    colour: "pink",
+    shape: "ribbon",
+  },
+  {
+    id: "yellow-star",
+    name: "⭐",
+    colour: "yellow",
+    shape: "star",
+  },
+  {
+    id: "red-heart",
+    name: "❤️",
+    colour: "red",
+    shape: "heart",
   },
 ];
 
@@ -88,32 +138,58 @@ const JewelryMaker = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
+
   return (
-    <div className="w-full h-[90%] flex gap-4 justify-center items-center bg-red-100 text-3xl">
-      <DndContext onDragEnd={handleDragEnd}>
-        <div className="w-full h-full bg-red-300 p-4">
-          <SortableContext
-            items={items.map((item) => item.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {items.map((item) => (
-              <SortableItem key={item.id} item={item} id={item.id} />
-            ))}
-          </SortableContext>
-        </div>
-        <div className="w-full h-full flex flex-col bg-red-300">
-          Select Area
-          {paletteItems.map((item) => (
-            <button
-              key={item.id}
-              className="bg-blue-500 p-4 mb-2 rounded cursor-pointer"
-              onClick={() => handleAddItem(item)}
+    <div className="w-full h-full flex flex-col gap-4 justify-center items-center text-3xl">
+      <div className="w-full h-[calc(90%-40px)] flex gap-4 justify-center items-center text-3xl">
+        <div className="w-full h-full p-4 bg-empty rounded-lg border-2 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <DndContext onDragEnd={handleDragEnd}>
+            <SortableContext
+              items={items.map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
             >
-              {item.name}
-            </button>
-          ))}
+              {items.map((item) => (
+                <SortableItem key={item.id} item={item} id={item.id} />
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
-      </DndContext>
+        <div className="w-full h-full flex flex-col gap-4">
+          <div className="flex flex-col items-center justify-center">
+            Bead Tray
+            <div className="w-full flex justify-between">
+              <div className="flex justify-around">
+                <button>Shape</button>
+                <button>Colour</button>
+                <button>Size</button>
+              </div>
+              <button>Star</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-4 pr-4 overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full">
+            {paletteItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleAddItem(item)}
+                className="bg-empty rounded-lg aspect-square"
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-[40px] flex items-center justify-around rounded-lg">
+        <div className="w-full flex justify-center">
+          <button className="bg-primary text-background text-xl p-2 rounded-3xl">Order</button>
+        </div>
+        <div className="w-full flex justify-center">
+          <div>put the circles here</div>
+        </div>
+      </div>
     </div>
   );
 };
