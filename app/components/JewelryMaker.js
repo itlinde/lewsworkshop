@@ -1,13 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DndContext, TouchSensor, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+  DndContext,
+  TouchSensor,
+  MouseSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
+import { orderService } from "../lib/api";
 
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
@@ -114,10 +122,7 @@ const JewelryMaker = () => {
   const [items, setItems] = useState([]);
   const paletteItems = examplePaletteItems;
 
-  const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor)
-  );
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -143,9 +148,24 @@ const JewelryMaker = () => {
     });
   };
 
-  useEffect(() => {
+  const handleOrderSubmit = async () => {
     console.log(items);
-  }, [items]);
+    // try {
+    //   const orderData = {
+    //     orderInfo: {
+    //       status: "pending",
+    //     },
+    //     customerInfo: {
+    //       email: "test",
+    //       address: "test",
+    //     },
+    //   };
+
+    //   await orderService.createOrder(orderData);
+    // } catch (err) {
+    //   console.error("Error creating order:", err);
+    // }
+  };
 
   return (
     <div className="w-full h-full flex flex-col gap-4 justify-center items-center text-3xl">
@@ -189,7 +209,9 @@ const JewelryMaker = () => {
       </div>
       <div className="w-full h-[40px] flex items-center justify-around rounded-lg">
         <div className="w-full flex justify-center">
-          <button className="bg-primary text-background text-xl p-2 rounded-3xl">Order</button>
+          <button className="bg-primary text-background text-xl p-2 rounded-3xl">
+            Order
+          </button>
         </div>
         <div className="w-full flex justify-center">
           <div>put the circles here</div>
