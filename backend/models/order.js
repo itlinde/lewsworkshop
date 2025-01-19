@@ -31,7 +31,4 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-
-console.log(beadSchema);
-
 module.exports = mongoose.model("Order", orderSchema);

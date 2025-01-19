@@ -35,15 +35,18 @@ router.get("/:id", getOrder, (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const orderInfo = req.body?.orderInfo || {};
+  const customerInfo = req.body?.customerInfo || {};
+
   const order = new Order({
     orderInfo: {
       dateOrdered: Date.now(),
-      status: req.body.orderInfo.status,
-      beads: req.body.orderInfo.beads,
+      status: orderInfo.status,
+      beads: orderInfo.beads,
     },
     customerInfo: {
-      email: req.body.customerInfo.email,
-      address: req.body.customerInfo.address,
+      email: customerInfo.email,
+      address: customerInfo.address,
     },
   });
 
