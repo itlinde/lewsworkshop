@@ -177,7 +177,7 @@ const JewelryMaker = () => {
               strategy={verticalListSortingStrategy}
             >
               {items.map((item) => (
-                <SortableItem key={item.id} item={item} id={item.id}/>
+                <SortableItem key={item.id} item={item} id={item.id} />
               ))}
             </SortableContext>
           </DndContext>
@@ -187,11 +187,19 @@ const JewelryMaker = () => {
             <h3 className="font-darumadrop text-primary text-4xl">Bead Tray</h3>
             <div id="filters" className="w-full flex justify-between">
               <div className="flex justify-around space-x-2">
-                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">shape</button>
-                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">colour</button>
-                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">size</button>
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">
+                  shape
+                </button>
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">
+                  colour
+                </button>
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">
+                  size
+                </button>
               </div>
-              <button className="text-xl rounded-full px-5 border-2 border-textDark text-textDark">⭐️</button>
+              <button className="text-xl rounded-full px-5 border-2 border-textDark text-textDark">
+                ⭐️
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 pr-4 overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full">
@@ -209,7 +217,10 @@ const JewelryMaker = () => {
       </div>
       <div className="w-full h-[40px] flex items-center justify-around rounded-lg">
         <div className="w-full flex justify-center">
-          <button className="bg-primary text-background text-xl p-2 rounded-3xl">
+          <button
+            onClick={handleOrderSubmit}
+            className="bg-primary text-background text-xl p-2 rounded-3xl"
+          >
             Order
           </button>
         </div>
