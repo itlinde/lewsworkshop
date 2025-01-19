@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, TouchSensor, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -114,6 +114,11 @@ const JewelryMaker = () => {
   const [items, setItems] = useState([]);
   const paletteItems = examplePaletteItems;
 
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(TouchSensor)
+  );
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
@@ -146,7 +151,7 @@ const JewelryMaker = () => {
     <div className="w-full h-full flex flex-col gap-4 justify-center items-center text-3xl">
       <div className="w-full h-[calc(90%-40px)] flex gap-4 justify-center items-center text-3xl">
         <div className="w-full h-full p-4 bg-empty rounded-lg border-2 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <DndContext onDragEnd={handleDragEnd}>
+          <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
             <SortableContext
               items={items.map((item) => item.id)}
               strategy={verticalListSortingStrategy}
