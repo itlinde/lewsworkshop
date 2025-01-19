@@ -8,11 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: "789DBC",
-        primaryLight: "CBDDED",
+        background: "#FEF9F2",
+        primary: "#789DBC",
+        primaryLight: "#CBDDED",
+        textDark: "#535353",
+        textLight: "#7A736B"
         
+      },
+      fontFamily: {
+        inclusiveSans: ['var(--font-inclusive-sans)', 'Arial', 'serif'],
+        darumadrop: ['var(--font-darumadrop-one)', 'Arial', 'serif'],
       },
     },
   },
