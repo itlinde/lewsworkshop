@@ -33,16 +33,48 @@ const SortableItem = ({ item }) => {
   );
 };
 
+const examplePaletteItems = [
+  {
+    id: "red-butterfly",
+    name: "🦋 Red Butterfly",
+    colour: "red",
+    shape: "butterfly",
+  },
+  {
+    id: "blue-star",
+    name: "⭐ Blue Star",
+    colour: "blue",
+    shape: "star",
+  },
+  {
+    id: "purple-heart",
+    name: "💜 Purple Heart",
+    colour: "purple",
+    shape: "heart",
+  },
+  {
+    id: "yellow-flower",
+    name: "🌸 Yellow Flower",
+    colour: "yellow",
+    shape: "flower",
+  },
+  {
+    id: "green-circle",
+    name: "⭕ Green Circle",
+    colour: "green",
+    shape: "circle",
+  },
+  {
+    id: "orange-cube",
+    name: "⬛ Orange Cube",
+    colour: "orange",
+    shape: "cube",
+  },
+];
+
 const JewelryMaker = () => {
   const [items, setItems] = useState([]);
-  const paletteItems = [
-    { id: "pearl", name: "🔮 Pearl" },
-    { id: "diamond", name: "💎 Diamond" },
-    { id: "ruby", name: "❤️ Ruby" },
-    { id: "moonstone", name: "🌙 Moonstone" },
-    { id: "sapphire", name: "⭐ Sapphire" },
-    { id: "emerald", name: "🍀 Emerald" },
-  ];
+  const paletteItems = examplePaletteItems;
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
