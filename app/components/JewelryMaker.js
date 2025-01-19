@@ -150,28 +150,28 @@ const JewelryMaker = () => {
   return (
     <div className="w-full h-full flex flex-col gap-4 justify-center items-center text-3xl">
       <div className="w-full h-[calc(90%-40px)] flex gap-4 justify-center items-center text-3xl">
-        <div className="w-full h-full p-4 bg-empty rounded-lg border-2 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="w-full h-full p-4 bg-backgroundDark rounded-3xl border-4 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
             <SortableContext
               items={items.map((item) => item.id)}
               strategy={verticalListSortingStrategy}
             >
               {items.map((item) => (
-                <SortableItem key={item.id} item={item} id={item.id} />
+                <SortableItem key={item.id} item={item} id={item.id}/>
               ))}
             </SortableContext>
           </DndContext>
         </div>
         <div className="w-full h-full flex flex-col gap-4">
-          <div className="flex flex-col items-center justify-center">
-            Bead Tray
-            <div className="w-full flex justify-between">
-              <div className="flex justify-around">
-                <button>Shape</button>
-                <button>Colour</button>
-                <button>Size</button>
+          <div className="flex flex-col items-center justify-center space-y-8">
+            <h3 className="font-darumadrop text-primary text-4xl">Bead Tray</h3>
+            <div id="filters" className="w-full flex justify-between">
+              <div className="flex justify-around space-x-2">
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">shape</button>
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">colour</button>
+                <button className="font-inclusiveSans text-xl rounded-full px-5 py-1 border-2 border-textDark text-textDark hover:bg-primaryLight hover:border-primaryLight transition ease-in-out duration-200 active:bg-primary active:text-background active:border-primary">size</button>
               </div>
-              <button>Star</button>
+              <button className="text-xl rounded-full px-5 border-2 border-textDark text-textDark">⭐️</button>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 pr-4 overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full">
@@ -179,7 +179,7 @@ const JewelryMaker = () => {
               <button
                 key={item.id}
                 onClick={() => handleAddItem(item)}
-                className="bg-empty rounded-lg aspect-square"
+                className="bg-backgroundDark rounded-lg aspect-square"
               >
                 {item.name}
               </button>
