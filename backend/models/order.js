@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const { beadSchema } = require("./bead");
 
 const orderSchema = new mongoose.Schema({
+
   orderInfo: {
     dateOrdered: {
       type: Date,
@@ -11,6 +13,10 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
       default: "Pending",
+    },
+    beads: {
+      type: [beadSchema],
+      required: true,
     },
   },
   customerInfo: {
@@ -24,5 +30,8 @@ const orderSchema = new mongoose.Schema({
     },
   },
 });
+
+
+console.log(beadSchema);
 
 module.exports = mongoose.model("Order", orderSchema);

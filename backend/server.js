@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-require("dotenv").config();
+const result = require("dotenv").config();
 
 mongoose.connect(process.env.MONGODB_URI);
 const db = mongoose.connection;
@@ -13,4 +13,7 @@ app.use(express.json());
 const orderRouter = require("./routes/orders");
 app.use("/orders", orderRouter);
 
-app.listen(5000, () => console.log("server started"));
+const beadRouter = require("./routes/beads");
+app.use("/beads", beadRouter);
+
+app.listen(process.env.PORT, () => console.log("server started"));

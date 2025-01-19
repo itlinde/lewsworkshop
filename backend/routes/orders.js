@@ -38,7 +38,8 @@ router.post("/", async (req, res) => {
   const order = new Order({
     orderInfo: {
       dateOrdered: Date.now(),
-      status: req.body.status,
+      status: req.body.orderInfo.status,
+      beads: req.body.orderInfo.beads,
     },
     customerInfo: {
       email: req.body.customerInfo.email,
