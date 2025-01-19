@@ -25,7 +25,7 @@ const beadSchema = new mongoose.Schema({
       "pink",
       "white",
       "black",
-      "other",
+      "other"
     ],
     required: true,
   },
@@ -36,4 +36,9 @@ const beadSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Bead", beadSchema);
+// module.exports = mongoose.model("Bead", beadSchema);
+
+module.exports = {
+  beadSchema,
+  Bead: mongoose.model("Bead", beadSchema),
+};
