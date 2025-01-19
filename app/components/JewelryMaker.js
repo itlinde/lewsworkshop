@@ -47,75 +47,66 @@ const examplePaletteItems = [
   {
     id: "pink-butterfly",
     name: "🦋",
-    colour: "pink",
+    colour: "pink", 
     shape: "butterfly",
+    diameter: 10,
+    stock: 100,
+    image: "/images/pink-butterfly.png"
   },
   {
-    id: "purple-heart",
+    id: "purple-heart", 
     name: "💖",
     colour: "purple",
     shape: "heart",
+    diameter: 8,
+    stock: 100,
+    image: "/images/purple-heart.png"
   },
   {
     id: "blue-star",
     name: "✨",
     colour: "blue",
-    shape: "star",
+    shape: "star", 
+    diameter: 12,
+    stock: 100,
+    image: "/images/blue-star.png"
   },
   {
     id: "yellow-flower",
     name: "🌺",
     colour: "yellow",
     shape: "flower",
-  },
-  {
-    id: "red-rose",
-    name: "🌹",
-    colour: "red",
-    shape: "rose",
-  },
-  {
-    id: "orange-sun",
-    name: "☀️",
-    colour: "orange",
-    shape: "sun",
-  },
-  {
-    id: "green-leaf",
-    name: "🍃",
-    colour: "green",
-    shape: "leaf",
-  },
-  {
-    id: "blue-droplet",
-    name: "💧",
-    colour: "blue",
-    shape: "droplet",
-  },
-  {
-    id: "purple-crystal",
-    name: "💎",
-    colour: "purple",
-    shape: "crystal",
-  },
-  {
-    id: "pink-ribbon",
-    name: "🎀",
-    colour: "pink",
-    shape: "ribbon",
-  },
-  {
-    id: "yellow-star",
-    name: "⭐",
-    colour: "yellow",
-    shape: "star",
+    diameter: 15,
+    stock: 100,
+    image: "/images/yellow-flower.png"
   },
   {
     id: "red-heart",
-    name: "❤️",
+    name: "❤️", 
     colour: "red",
     shape: "heart",
+    diameter: 8,
+    stock: 100,
+    image: "/images/red-heart.png"
   },
+  {
+    id: "white-circle",
+    name: "⚪",
+    colour: "white",
+    shape: "circle",
+    diameter: 6,
+    stock: 100,
+    image: "/images/white-circle.png"
+  },
+  {
+    id: "black-cube",
+    name: "⬛",
+    colour: "black", 
+    shape: "cube",
+    diameter: 10,
+    stock: 100,
+    image: "/images/black-cube.png"
+  }
 ];
 
 const JewelryMaker = () => {
@@ -143,6 +134,11 @@ const JewelryMaker = () => {
       const newItem = {
         id: uuidv4(),
         name: item.name,
+        stock: item.stock,
+        image: item.image,
+        diameter: item.diameter,
+        colour: item.colour,
+        shape: item.shape
       };
       return [newItem, ...prev];
     });
