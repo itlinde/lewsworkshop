@@ -12,13 +12,14 @@ export default {
         backgroundDark: "#EFEAE3",
         primary: "#789DBC",
         primaryLight: "#CBDDED",
+        secondary: "#D78A9D",
+        secondaryLight: "#FFE3E3",
         textDark: "#535353",
-        textLight: "#7A736B"
-        
+        textLight: "#7A736B",
       },
       fontFamily: {
-        inclusiveSans: ['var(--font-inclusive-sans)', 'Arial', 'serif'],
-        darumadrop: ['var(--font-darumadrop-one)', 'Arial', 'serif'],
+        inclusiveSans: ["var(--font-inclusive-sans)", "Arial", "serif"],
+        darumadrop: ["var(--font-darumadrop-one)", "Arial", "serif"],
       },
     },
   },

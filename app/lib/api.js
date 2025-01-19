@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5001";
+const BASE_URL = "http://localhost:5000";
 
 export const orderService = {
   createOrder: async (orderData) => {
@@ -47,6 +47,18 @@ export const orderService = {
       return response.json();
     } catch (err) {
       console.error("Error fetching order:", err);
+      throw err;
+    }
+  },
+
+  deleteOrder: async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/orders/${id}`, {
+        method: "DELETE",
+      });
+      return response.json();
+    } catch (err) {
+      console.error("Error deleting order:", err);
       throw err;
     }
   },
