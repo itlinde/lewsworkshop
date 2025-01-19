@@ -25,7 +25,7 @@ const beadSchema = new mongoose.Schema({
       "pink",
       "white",
       "black",
-      "other"
+      "other",
     ],
     required: true,
   },

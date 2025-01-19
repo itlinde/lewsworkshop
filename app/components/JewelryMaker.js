@@ -35,40 +35,28 @@ const SortableItem = ({ item }) => {
 
 const examplePaletteItems = [
   {
-    id: "red-butterfly",
-    name: "🦋 Red Butterfly",
-    colour: "red",
+    id: "pink-butterfly", 
+    name: "🦋 Pink Butterfly",
+    colour: "pink",
     shape: "butterfly",
   },
   {
-    id: "blue-star",
-    name: "⭐ Blue Star",
-    colour: "blue",
-    shape: "star",
-  },
-  {
     id: "purple-heart",
-    name: "💜 Purple Heart",
+    name: "💖 Purple Heart", 
     colour: "purple",
     shape: "heart",
   },
   {
+    id: "blue-star",
+    name: "✨ Blue Star",
+    colour: "blue", 
+    shape: "star",
+  },
+  {
     id: "yellow-flower",
-    name: "🌸 Yellow Flower",
+    name: "🌺 Yellow Flower",
     colour: "yellow",
     shape: "flower",
-  },
-  {
-    id: "green-circle",
-    name: "⭕ Green Circle",
-    colour: "green",
-    shape: "circle",
-  },
-  {
-    id: "orange-cube",
-    name: "⬛ Orange Cube",
-    colour: "orange",
-    shape: "cube",
   },
 ];
 
@@ -96,7 +84,7 @@ const JewelryMaker = () => {
         id: uuidv4(),
         name: item.name,
       };
-      return [...prev, newItem];
+      return [newItem, ...prev];
     });
   };
 
