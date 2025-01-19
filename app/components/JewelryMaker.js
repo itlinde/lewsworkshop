@@ -87,48 +87,6 @@ const OrderModal = ({
   );
 };
 
-const OrderModal = ({
-  setModalOpen,
-  handleOrderSubmit,
-  setEmail,
-  setAddress,
-  email,
-  address,
-}) => {
-  return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          setModalOpen(false);
-        }
-      }}
-    >
-      <div className="flex flex-col items-center justify-center bg-background w-[40vw] h-[40vh] rounded-lg border-4 border-primaryLight">
-        <h1 className="text-2xl font-darumadrop">Order Modal</h1>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <button
-          onClick={() => handleOrderSubmit()}
-          className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
-        >
-          Order
-        </button>
-      </div>
-    </div>
-  );
-};
-
 const examplePaletteItems = [
   {
     id: "white-pearl",
