@@ -9,7 +9,7 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    if (password === "frediscool") {
+    if (password === "lewlery") {
       setEntered(true);
     }
   }, [password]);
@@ -17,7 +17,7 @@ export default function Home() {
   return !entered ? (
     <div className="">
       <div className="flex flex-col mt-16 items-center bg-primary w-fit p-10 rounded-xl mx-auto space-y-3">
-        <h2>wass yo password:</h2>
+        <h2>password pls:</h2>
         <div className="">
           <input
             type="text"

@@ -34,7 +34,7 @@ const AdminOrders = () => {
           </ul>
         </nav>
 
-        <div className="w-full bg-background rounded-lg shadow-lg overflow-hidden">
+        <div className="w-full bg-background rounded-xl shadow-lg overflow-hidden">
           <div className="bg-primary text-background p-4 grid grid-cols-6 gap-4 font-medium">
             <div>Order ID</div>
             <div>Date Ordered</div>

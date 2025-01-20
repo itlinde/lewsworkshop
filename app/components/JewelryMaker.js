@@ -39,7 +39,7 @@ const SortableItem = ({ item }) => {
       className="w-full flex justify-center items-center"
     >
       <div className="flex justify-center items-center mb-2 rounded cursor-pointer aspect-square">
-        <Image className="w-14 h-14 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
+        <Image className="w-16 h-16 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
       </div>
     </div>
   );
@@ -62,19 +62,21 @@ const OrderModal = ({
         }
       }}
     >
-      <div className="flex flex-col items-center justify-center bg-background w-[40vw] h-[40vh] rounded-lg border-4 border-primaryLight">
-        <h1 className="text-2xl font-darumadrop">Order Modal</h1>
+      <div className="flex flex-col items-center justify-center bg-background w-[40vw] h-[40vh] rounded-2xl border-4 border-primaryLight gap-3">
+        <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
         />
         <input
           type="text"
           placeholder="Address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
         />
         <button
           onClick={() => handleOrderSubmit()}
@@ -309,7 +311,7 @@ const JewelryMaker = () => {
                   onClick={() => handleAddItem(item)}
                   className="bg-backgroundDark rounded-lg aspect-square hover:bg-background hover:scale-110 active:scale-125 transition ease-in-out duration-200"
                 >
-                  <Image className="w-14 h-14 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
+                  <Image className="w-16 h-16 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
                 </button>
               ))}
             </div>

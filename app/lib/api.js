@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:5001";
 
 export const orderService = {
   createOrder: async (orderData) => {
