@@ -1,2 +1,2 @@
 # lewsworkshop
-make your own jewelry store!
+make your own jewelry online store!
