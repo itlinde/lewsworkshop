@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import AdminOrders from "../components/AdminOrders";
+import Image from "next/image";
 
 export default function Home() {
   const [password, setPassword] = useState("");
@@ -16,7 +17,7 @@ export default function Home() {
 
   return !entered ? (
     <div className="">
-      <div className="flex flex-col mt-16 items-center bg-primary w-fit p-10 rounded-xl mx-auto space-y-3">
+      <div className="flex flex-col mt-16 items-center bg-primary w-96 p-10 rounded-xl mx-auto space-y-3">
         <h2>password pls:</h2>
         <div className="">
           <input
@@ -31,6 +32,7 @@ export default function Home() {
           <buttom type="submit"></buttom>
         </div>
       </div>
+      <Image className="w-96 object-fit place-self-center mt-4 rounded-xl border-4 border-primaryLight" src="/lewlery.png" width={500} height={400} alt="drawing of olivia"/>
     </div>
   ) : (
     <AdminOrders />
