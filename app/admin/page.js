@@ -18,7 +18,7 @@ export default function Home() {
   return !entered ? (
     <div className="">
       <div className="flex flex-col mt-16 items-center bg-primary w-96 p-10 rounded-xl mx-auto space-y-3">
-        <h2>password pls:</h2>
+        <h2 className="font-inclusiveSans text-base text-white">password pls:</h2>
         <div className="">
           <input
             type="text"

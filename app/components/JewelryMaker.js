@@ -78,6 +78,7 @@ const OrderModal = ({
           onChange={(e) => setAddress(e.target.value)}
           className="rounded-xl border-2 px-2 py-1"
         />
+        <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">note: this project is still a work in progress! order's aren't being taken at the moment.</p>
         <button
           onClick={() => handleOrderSubmit()}
           className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
