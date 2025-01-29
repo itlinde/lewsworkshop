@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 import { useState, useEffect } from "react";
 import {
@@ -39,7 +39,13 @@ const SortableItem = ({ item }) => {
       className="w-full flex justify-center items-center"
     >
       <div className="flex justify-center items-center mb-2 rounded cursor-pointer aspect-square">
-        <Image className="w-16 h-16 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
+        <Image
+          className="w-16 h-16 place-self-center"
+          src={item.image}
+          width={400}
+          height={400}
+          alt="beeaadddd"
+        />
       </div>
     </div>
   );
@@ -62,7 +68,7 @@ const OrderModal = ({
         }
       }}
     >
-      <div className="flex flex-col items-center justify-center bg-background w-[40vw] h-[40vh] rounded-2xl border-4 border-primaryLight gap-3">
+      <div className="flex flex-col items-center justify-center bg-background w-[50vw] min-h-[60vh] rounded-2xl border-4 border-primaryLight gap-3">
         <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
         <input
           type="email"
@@ -78,7 +84,10 @@ const OrderModal = ({
           onChange={(e) => setAddress(e.target.value)}
           className="rounded-xl border-2 px-2 py-1"
         />
-        <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">note: this project is still a work in progress! order's aren't being taken at the moment.</p>
+        <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">
+          note: this project is still a work in progress! orders aren't being
+          taken at the moment.
+        </p>
         <button
           onClick={() => handleOrderSubmit()}
           className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
@@ -94,29 +103,29 @@ const examplePaletteItems = [
   {
     id: "white-pearl",
     name: "🦋",
-    colour: "white", 
+    colour: "white",
     shape: "circle",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead1.png"
+    image: "/bead-images/bead1.png",
   },
   {
-    id: "metal-heart", 
+    id: "metal-heart",
     name: "💖",
     colour: "other",
     shape: "heart",
     diameter: 8,
     stock: 100,
-    image: "/bead-images/bead2.png"
+    image: "/bead-images/bead2.png",
   },
   {
     id: "blue-circle",
     name: "✨",
     colour: "blue",
-    shape: "circle", 
+    shape: "circle",
     diameter: 12,
     stock: 100,
-    image: "/bead-images/bead3.png"
+    image: "/bead-images/bead3.png",
   },
   {
     id: "white-circle",
@@ -125,16 +134,16 @@ const examplePaletteItems = [
     shape: "circle",
     diameter: 15,
     stock: 100,
-    image: "/bead-images/bead4.png"
+    image: "/bead-images/bead4.png",
   },
   {
     id: "purple-circle",
-    name: "❤️", 
+    name: "❤️",
     colour: "purple",
     shape: "circle",
     diameter: 8,
     stock: 100,
-    image: "/bead-images/bead6.png"
+    image: "/bead-images/bead6.png",
   },
   {
     id: "pink-circle",
@@ -143,62 +152,62 @@ const examplePaletteItems = [
     shape: "circle",
     diameter: 6,
     stock: 100,
-    image: "/bead-images/bead8.png"
+    image: "/bead-images/bead8.png",
   },
   {
     id: "pink-butterfly",
     name: "⬛",
-    colour: "pink", 
+    colour: "pink",
     shape: "butterfly",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead9.png"
+    image: "/bead-images/bead9.png",
   },
 
   {
     id: "yellow-pearl",
     name: "⬛",
-    colour: "yellow", 
+    colour: "yellow",
     shape: "circle",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead10.png"
+    image: "/bead-images/bead10.png",
   },
 
   {
     id: "clear-star",
     name: "⬛",
-    colour: "other", 
+    colour: "other",
     shape: "star",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead11.png"
+    image: "/bead-images/bead11.png",
   },
 
   {
     id: "pink-star",
     name: "⬛",
-    colour: "pink", 
+    colour: "pink",
     shape: "star",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead12.png"
+    image: "/bead-images/bead12.png",
   },
 
   {
     id: "small-white-pearl",
     name: "⬛",
-    colour: "white", 
+    colour: "white",
     shape: "circle",
     diameter: 10,
     stock: 100,
-    image: "/bead-images/bead13.png"
-  }
+    image: "/bead-images/bead13.png",
+  },
 ];
 
 const JewelryMaker = () => {
   const [items, setItems] = useState([]);
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
@@ -252,7 +261,7 @@ const JewelryMaker = () => {
     } catch (err) {
       console.error("Error creating order:", err);
     }
-    setModalOpen(false);  
+    setModalOpen(false);
   };
 
   return (
@@ -312,7 +321,13 @@ const JewelryMaker = () => {
                   onClick={() => handleAddItem(item)}
                   className="bg-backgroundDark rounded-lg aspect-square hover:bg-background hover:scale-110 active:scale-125 transition ease-in-out duration-200"
                 >
-                  <Image className="w-16 h-16 place-self-center" src={item.image} width={400} height={400} alt="beeaadddd"/>
+                  <Image
+                    className="w-16 h-16 place-self-center"
+                    src={item.image}
+                    width={400}
+                    height={400}
+                    alt="beeaadddd"
+                  />
                 </button>
               ))}
             </div>
