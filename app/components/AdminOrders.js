@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { orderService } from "../lib/api";
+// import { orderService } from "../lib/api";
 import Header from "./Header";
 
 const AdminOrders = () => {
@@ -7,7 +7,9 @@ const AdminOrders = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    orderService.getOrders().then((orders) => setOrders(orders));
+    fetch("/api/testOrders")
+      .then((res) => res.json())
+      .then((orders) => setOrders(orders));
   }, []);
 
   return (

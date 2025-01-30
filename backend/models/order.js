@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { beadSchema } = require("./bead");
 
 const orderSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+  },
   orderInfo: {
     dateOrdered: {
       type: Date,
@@ -30,4 +34,7 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = {
+  orderSchema,
+  Order: mongoose.models.Order || mongoose.model("Order", orderSchema),
+};

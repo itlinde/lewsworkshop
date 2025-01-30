@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   DndContext,
   TouchSensor,
@@ -17,10 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { orderService } from "../lib/api";
-
 import { CSS } from "@dnd-kit/utilities";
-import { v4 as uuidv4 } from "uuid";
 const SortableItem = ({ item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
@@ -232,7 +229,6 @@ const JewelryMaker = () => {
   const handleAddItem = (item) => {
     setItems((prev) => {
       const newItem = {
-        id: uuidv4(),
         name: item.name,
         stock: item.stock,
         image: item.image,
@@ -257,7 +253,10 @@ const JewelryMaker = () => {
         },
       };
 
-      await orderService.createOrder(orderData);
+      await fetch("/api/testOrders", {
+        method: "POST",
+        body: JSON.stringify(orderData),
+      });
     } catch (err) {
       console.error("Error creating order:", err);
     }

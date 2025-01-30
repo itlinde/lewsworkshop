@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <div>
-
       <Header />
       <main className="flex justify-center">
         <div className="w-[80vw]">

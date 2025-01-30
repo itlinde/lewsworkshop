@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const beadSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+  },
   stock: {
     type: Number,
     required: true,
@@ -38,5 +42,5 @@ const beadSchema = new mongoose.Schema({
 
 module.exports = {
   beadSchema,
-  Bead: mongoose.model("Bead", beadSchema),
+  Bead: mongoose.models.Bead || mongoose.model("Bead", beadSchema),
 };
