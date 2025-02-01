@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DndContext,
   TouchSensor,
@@ -229,6 +229,7 @@ const JewelryMaker = () => {
   const handleAddItem = (item) => {
     setItems((prev) => {
       const newItem = {
+        id: item.id,
         name: item.name,
         stock: item.stock,
         image: item.image,
