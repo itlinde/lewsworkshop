@@ -16,33 +16,33 @@ export async function GET() {
   }
 }
 
-const testOrder = new Order({
-  id: uuidv4(),
-  orderInfo: {
-    dateOrdered: new Date(),
-    status: "Pending",
-    beads: [
-      {
-        stock: 15,
-        image: "testImage",
-        diameter: 12,
-        colour: "red",
-        shape: "heart",
-      },
-      {
-        stock: 15,
-        image: "testImage",
-        diameter: 10,
-        colour: "blue",
-        shape: "star",
-      },
-    ],
-  },
-  customerInfo: {
-    email: "test@example.com",
-    address: "123 Test St, Test City, TS1 2AB",
-  },
-});
+// const testOrder = new Order({
+//   id: uuidv4(),
+//   orderInfo: {
+//     dateOrdered: new Date(),
+//     status: "Pending",
+//     beads: [
+//       {
+//         stock: 15,
+//         image: "testImage",
+//         diameter: 12,
+//         colour: "red",
+//         shape: "heart",
+//       },
+//       {
+//         stock: 15,
+//         image: "testImage",
+//         diameter: 10,
+//         colour: "blue",
+//         shape: "star",
+//       },
+//     ],
+//   },
+//   customerInfo: {
+//     email: "test@example.com",
+//     address: "123 Test St, Test City, TS1 2AB",
+//   },
+// });
 
 export async function POST(req) {
   try {
