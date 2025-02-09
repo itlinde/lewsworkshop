@@ -18,7 +18,6 @@ export async function POST(req) {
   try {
     // make body of post request
     const body = await req.json();
-    console.log("POST request recieved data:", body);
 
     const supabase = await createClient();
     const res = await supabase.from("orders").insert({ 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AdminOrdersNew from "../components/AdminOrdersNew";
+import AdminOrders from "./AdminOrders";
 import AdminBeads from "../components/AdminBeads";
 import Header from "./Header";
 const AdminNav = () => {
@@ -33,7 +33,7 @@ const AdminNav = () => {
         </ul>
       </nav>
 
-      {ordersScreen && <AdminOrdersNew /> }
+      {ordersScreen && <AdminOrders /> }
       {beadsScreen && !ordersScreen && <AdminBeads />}
       
     </main>

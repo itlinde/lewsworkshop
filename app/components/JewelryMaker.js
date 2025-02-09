@@ -53,11 +53,7 @@ const SortableItem = ({ item }) => {
 
 const OrderModal = ({
   setModalOpen,
-  handleOrderSubmit2,
-  setEmail,
-  setAddress,
-  email,
-  address,
+  handleOrderSubmit,
   setTotal,
   status,
   setDeliveryMethod,
@@ -76,20 +72,6 @@ const OrderModal = ({
     >
       <div className="flex flex-col items-center justify-center bg-background w-[50vw] min-h-[60vh] rounded-2xl border-4 border-primaryLight gap-3">
         <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
-        {/* <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="rounded-xl border-2 px-2 py-1"
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="rounded-xl border-2 px-2 py-1"
-        /> */}
         <input
           type="text"
           placeholder="Total"
@@ -116,7 +98,7 @@ const OrderModal = ({
           taken at the moment.
         </p>
         <button
-          onClick={() => handleOrderSubmit2()}
+          onClick={() => handleOrderSubmit()}
           className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
         >
           Order
@@ -231,8 +213,6 @@ const examplePaletteItems = [
 const JewelryMaker = () => {
   const [items, setItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
   const [total, setTotal] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("");
   const [status, setStatus] = useState("");
@@ -270,7 +250,7 @@ const JewelryMaker = () => {
     });
   };
 
-  const handleOrderSubmit2 = async () => {
+  const handleOrderSubmit = async () => {
     try {
       const orderData = {
         date_ordered: Date.now(), // DATE????😭
@@ -281,7 +261,7 @@ const JewelryMaker = () => {
         beads: null,
       };
 
-      await fetch("/api/ordersSupabase", {
+      await fetch("/api/orders", {
         method: "POST",
         body: JSON.stringify(orderData),
       });
@@ -290,29 +270,6 @@ const JewelryMaker = () => {
     }
     setModalOpen(false);
   }
-
-  // const handleOrderSubmit = async () => {
-  //   try {
-  //     const orderData = {
-  //       orderInfo: {
-  //         status: "pending",
-  //         beads: items,
-  //       },
-  //       customerInfo: {
-  //         email: email,
-  //         address: address,
-  //       },
-  //     };
-
-  //     await fetch("/api/testOrders", {
-  //       method: "POST",
-  //       body: JSON.stringify(orderData),
-  //     });
-  //   } catch (err) {
-  //     console.error("Error creating order:", err);
-  //   }
-  //   setModalOpen(false);
-  // };
 
   return (
     <>
@@ -415,14 +372,13 @@ const JewelryMaker = () => {
       {modalOpen && (
         <OrderModal
           setModalOpen={setModalOpen}
-          handleOrderSubmit2={handleOrderSubmit2}
-          email={email}
-          address={address}
-          setEmail={setEmail}
-          setAddress={setAddress}
+          handleOrderSubmit={handleOrderSubmit}
           setTotal={setTotal}
           setDeliveryMethod={setDeliveryMethod}
           setStatus={setStatus}
+          status={status}
+          total={total}
+          deliveryMethod={deliveryMethod}
         />
       )}
     </>

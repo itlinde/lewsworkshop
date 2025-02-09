@@ -4,7 +4,7 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch("/api/ordersSupabase")
+    fetch("/api/orders")
       .then((res) => res.json())
       .then((orders) => setOrders(orders));
   }, []);

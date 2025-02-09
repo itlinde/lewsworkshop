@@ -11,7 +11,7 @@ const AdminBeads = () => {
 
   // get all beads
   useEffect(() => {
-    fetch("/api/beadsSupabase")
+    fetch("/api/beads")
       .then((res) => res.json())
       .then((beads) => setBeads(beads));
   }, []);
@@ -28,7 +28,7 @@ const AdminBeads = () => {
             stock: stock
         };
 
-        await fetch("/api/beadsSupabase", {
+        await fetch("/api/beads", {
             method: "POST",
             body: JSON.stringify(beadData),
         });
