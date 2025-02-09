@@ -1,8 +1,8 @@
   "use client";
 
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
-import AdminOrders from "../components/AdminOrders";
+import AdminNav from "../components/AdminNav";
+
 import Image from "next/image";
 
 export default function Home() {
@@ -29,12 +29,12 @@ export default function Home() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <buttom type="submit"></buttom>
+          <button type="submit"></button>
         </div>
       </div>
       <Image className="w-96 object-fit place-self-center mt-4 rounded-xl border-4 border-primaryLight" src="/lewlery.png" width={500} height={400} alt="drawing of olivia"/>
     </div>
   ) : (
-    <AdminOrders />
+    <AdminNav />
   );
 }

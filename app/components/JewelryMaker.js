@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   DndContext,
   TouchSensor,
@@ -54,10 +54,12 @@ const SortableItem = ({ item }) => {
 const OrderModal = ({
   setModalOpen,
   handleOrderSubmit,
-  setEmail,
-  setAddress,
-  email,
-  address,
+  setTotal,
+  status,
+  setDeliveryMethod,
+  total,
+  deliveryMethod,
+  setStatus,
 }) => {
   return (
     <div
@@ -71,17 +73,24 @@ const OrderModal = ({
       <div className="flex flex-col items-center justify-center bg-background w-[50vw] min-h-[60vh] rounded-2xl border-4 border-primaryLight gap-3">
         <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Total"
+          value={total}
+          onChange={(e) => setTotal(e.target.value)}
           className="rounded-xl border-2 px-2 py-1"
         />
         <input
           type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Delivery Method"
+          value={deliveryMethod}
+          onChange={(e) => setDeliveryMethod(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
+        />
+        <input
+          type="text"
+          placeholder="Status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
           className="rounded-xl border-2 px-2 py-1"
         />
         <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">
@@ -204,8 +213,9 @@ const examplePaletteItems = [
 const JewelryMaker = () => {
   const [items, setItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [total, setTotal] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [status, setStatus] = useState("");
 
   const paletteItems = examplePaletteItems;
 
@@ -243,25 +253,23 @@ const JewelryMaker = () => {
   const handleOrderSubmit = async () => {
     try {
       const orderData = {
-        orderInfo: {
-          status: "pending",
-          beads: items,
-        },
-        customerInfo: {
-          email: email,
-          address: address,
-        },
+        date_ordered: Date.now(), // DATE????😭
+        total: total,
+        delivery_method: deliveryMethod,
+        status: status,
+        customer_id: null,
+        beads: null,
       };
 
-      await fetch("/api/testOrders", {
+      await fetch("/api/orders", {
         method: "POST",
         body: JSON.stringify(orderData),
       });
-    } catch (err) {
-      console.error("Error creating order:", err);
+    } catch (error) {
+      console.error("Error creating order", error);
     }
     setModalOpen(false);
-  };
+  }
 
   return (
     <>
@@ -365,10 +373,12 @@ const JewelryMaker = () => {
         <OrderModal
           setModalOpen={setModalOpen}
           handleOrderSubmit={handleOrderSubmit}
-          email={email}
-          address={address}
-          setEmail={setEmail}
-          setAddress={setAddress}
+          setTotal={setTotal}
+          setDeliveryMethod={setDeliveryMethod}
+          setStatus={setStatus}
+          status={status}
+          total={total}
+          deliveryMethod={deliveryMethod}
         />
       )}
     </>
