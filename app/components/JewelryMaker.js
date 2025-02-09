@@ -18,10 +18,12 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
-import { now } from "mongoose";
+
+import { v4 as uuidv4 } from "uuid";
+
 const SortableItem = ({ item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+    useSortable({ id: item.dragId });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -126,7 +128,7 @@ const OrderModal = ({
 
 const examplePaletteItems = [
   {
-    id: "white-pearl",
+    dragId: "white-pearl",
     name: "🦋",
     colour: "white",
     shape: "circle",
@@ -135,7 +137,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead1.png",
   },
   {
-    id: "metal-heart",
+    dragId: "metal-heart",
     name: "💖",
     colour: "other",
     shape: "heart",
@@ -144,7 +146,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead2.png",
   },
   {
-    id: "blue-circle",
+    dragId: "blue-circle",
     name: "✨",
     colour: "blue",
     shape: "circle",
@@ -153,7 +155,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead3.png",
   },
   {
-    id: "white-circle",
+    dragId: "white-circle",
     name: "🌺",
     colour: "white",
     shape: "circle",
@@ -162,7 +164,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead4.png",
   },
   {
-    id: "purple-circle",
+    dragId: "purple-circle",
     name: "❤️",
     colour: "purple",
     shape: "circle",
@@ -171,7 +173,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead6.png",
   },
   {
-    id: "pink-circle",
+    dragId: "pink-circle",
     name: "⚪",
     colour: "pink",
     shape: "circle",
@@ -180,7 +182,7 @@ const examplePaletteItems = [
     image: "/bead-images/bead8.png",
   },
   {
-    id: "pink-butterfly",
+    dragId: "pink-butterfly",
     name: "⬛",
     colour: "pink",
     shape: "butterfly",
@@ -188,9 +190,8 @@ const examplePaletteItems = [
     stock: 100,
     image: "/bead-images/bead9.png",
   },
-
   {
-    id: "yellow-pearl",
+    dragId: "yellow-pearl",
     name: "⬛",
     colour: "yellow",
     shape: "circle",
@@ -198,9 +199,8 @@ const examplePaletteItems = [
     stock: 100,
     image: "/bead-images/bead10.png",
   },
-
   {
-    id: "clear-star",
+    dragId: "clear-star",
     name: "⬛",
     colour: "other",
     shape: "star",
@@ -208,9 +208,8 @@ const examplePaletteItems = [
     stock: 100,
     image: "/bead-images/bead11.png",
   },
-
   {
-    id: "pink-star",
+    dragId: "pink-star",
     name: "⬛",
     colour: "pink",
     shape: "star",
@@ -218,9 +217,8 @@ const examplePaletteItems = [
     stock: 100,
     image: "/bead-images/bead12.png",
   },
-
   {
-    id: "small-white-pearl",
+    dragId: "small-white-pearl",
     name: "⬛",
     colour: "white",
     shape: "circle",
@@ -250,8 +248,8 @@ const JewelryMaker = () => {
 
     if (active.id !== over.id) {
       setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
+        const oldIndex = items.findIndex((item) => item.dragId === active.id);
+        const newIndex = items.findIndex((item) => item.dragId === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
     }
@@ -260,7 +258,7 @@ const JewelryMaker = () => {
   const handleAddItem = (item) => {
     setItems((prev) => {
       const newItem = {
-        id: item.id,
+        dragId: `${item.dragId}-${uuidv4()}`,
         name: item.name,
         stock: item.stock,
         image: item.image,
@@ -323,11 +321,15 @@ const JewelryMaker = () => {
           <div className="w-full h-full p-4 bg-backgroundDark rounded-3xl border-4 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
               <SortableContext
-                items={items.map((item) => item.id)}
+                items={items.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
               >
                 {items.map((item) => (
-                  <SortableItem key={item.id} item={item} id={item.id} />
+                  <SortableItem
+                    key={item.dragId}
+                    item={item}
+                    dragId={item.dragId}
+                  />
                 ))}
               </SortableContext>
             </DndContext>
@@ -369,7 +371,7 @@ const JewelryMaker = () => {
             <div className="grid grid-cols-3 gap-4 pr-4 overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full">
               {paletteItems.map((item) => (
                 <button
-                  key={item.id}
+                  key={item.dragId}
                   onClick={() => handleAddItem(item)}
                   className="bg-backgroundDark rounded-lg aspect-square hover:bg-background hover:scale-110 active:scale-125 transition ease-in-out duration-200"
                 >
