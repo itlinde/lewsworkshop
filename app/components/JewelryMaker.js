@@ -18,6 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
+import { now } from "mongoose";
 const SortableItem = ({ item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
@@ -50,11 +51,17 @@ const SortableItem = ({ item }) => {
 
 const OrderModal = ({
   setModalOpen,
-  handleOrderSubmit,
+  handleOrderSubmit2,
   setEmail,
   setAddress,
   email,
   address,
+  setTotal,
+  status,
+  setDeliveryMethod,
+  total,
+  deliveryMethod,
+  setStatus,
 }) => {
   return (
     <div
@@ -67,7 +74,7 @@ const OrderModal = ({
     >
       <div className="flex flex-col items-center justify-center bg-background w-[50vw] min-h-[60vh] rounded-2xl border-4 border-primaryLight gap-3">
         <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
-        <input
+        {/* <input
           type="email"
           placeholder="Email"
           value={email}
@@ -80,13 +87,34 @@ const OrderModal = ({
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           className="rounded-xl border-2 px-2 py-1"
+        /> */}
+        <input
+          type="text"
+          placeholder="Total"
+          value={total}
+          onChange={(e) => setTotal(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
+        />
+        <input
+          type="text"
+          placeholder="Delivery Method"
+          value={deliveryMethod}
+          onChange={(e) => setDeliveryMethod(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
+        />
+        <input
+          type="text"
+          placeholder="Status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className="rounded-xl border-2 px-2 py-1"
         />
         <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">
           note: this project is still a work in progress! orders aren't being
           taken at the moment.
         </p>
         <button
-          onClick={() => handleOrderSubmit()}
+          onClick={() => handleOrderSubmit2()}
           className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
         >
           Order
@@ -207,6 +235,9 @@ const JewelryMaker = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [total, setTotal] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState("");
+  const [status, setStatus] = useState("");
 
   const paletteItems = examplePaletteItems;
 
@@ -241,28 +272,49 @@ const JewelryMaker = () => {
     });
   };
 
-  const handleOrderSubmit = async () => {
+  const handleOrderSubmit2 = async () => {
     try {
       const orderData = {
-        orderInfo: {
-          status: "pending",
-          beads: items,
-        },
-        customerInfo: {
-          email: email,
-          address: address,
-        },
+        date_ordered: Date.now(), // DATE????😭
+        total: total,
+        delivery_method: deliveryMethod,
+        status: status,
+        customer_id: null,
+        beads: null,
       };
 
-      await fetch("/api/testOrders", {
+      await fetch("/api/ordersSupabase", {
         method: "POST",
         body: JSON.stringify(orderData),
       });
-    } catch (err) {
-      console.error("Error creating order:", err);
+    } catch (error) {
+      console.error("Error creating order", error);
     }
     setModalOpen(false);
-  };
+  }
+
+  // const handleOrderSubmit = async () => {
+  //   try {
+  //     const orderData = {
+  //       orderInfo: {
+  //         status: "pending",
+  //         beads: items,
+  //       },
+  //       customerInfo: {
+  //         email: email,
+  //         address: address,
+  //       },
+  //     };
+
+  //     await fetch("/api/testOrders", {
+  //       method: "POST",
+  //       body: JSON.stringify(orderData),
+  //     });
+  //   } catch (err) {
+  //     console.error("Error creating order:", err);
+  //   }
+  //   setModalOpen(false);
+  // };
 
   return (
     <>
@@ -361,11 +413,14 @@ const JewelryMaker = () => {
       {modalOpen && (
         <OrderModal
           setModalOpen={setModalOpen}
-          handleOrderSubmit={handleOrderSubmit}
+          handleOrderSubmit2={handleOrderSubmit2}
           email={email}
           address={address}
           setEmail={setEmail}
           setAddress={setAddress}
+          setTotal={setTotal}
+          setDeliveryMethod={setDeliveryMethod}
+          setStatus={setStatus}
         />
       )}
     </>

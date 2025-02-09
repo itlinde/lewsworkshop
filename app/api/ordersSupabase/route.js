@@ -21,12 +21,12 @@ export async function POST(req) {
     console.log("POST request recieved data:", body);
 
     const supabase = await createClient();
-    const res = await supabase.from("beads").insert({ image_path: body.image_path,
-                                                      diameter_mm: body.diameter_mm,
-                                                      price: body.price,
-                                                      colour: body.colour,
-                                                      shape: body.shape,
-                                                      stock: body.stock
+    const res = await supabase.from("orders").insert({ 
+                                                      total: body.total,
+                                                      status: body.status,
+                                                      delivery_method: body.delivery_method,
+                                                      customer_id: body.customer_id,
+                                                      date_ordered: body.date_ordered
     })
     return NextResponse.json(res);
   } catch (error) {

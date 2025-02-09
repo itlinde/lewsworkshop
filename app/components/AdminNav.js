@@ -3,7 +3,6 @@ import AdminOrders from "../components/AdminOrders";
 import AdminOrdersNew from "../components/AdminOrdersNew";
 import AdminBeads from "../components/AdminBeads";
 import Header from "./Header";
-
 const AdminNav = () => {
   const [ordersScreen, setOrdersScreen] = useState(true);
   const [beadsScreen, setBeadsScreen] = useState(false);
