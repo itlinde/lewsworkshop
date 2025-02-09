@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import { orderService } from "../lib/api";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);

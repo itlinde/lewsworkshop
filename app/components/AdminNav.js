@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import AdminOrders from "../components/AdminOrders";
+import { useState } from "react";
 import AdminOrdersNew from "../components/AdminOrdersNew";
 import AdminBeads from "../components/AdminBeads";
 import Header from "./Header";

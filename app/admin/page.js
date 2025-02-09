@@ -1,8 +1,6 @@
   "use client";
 
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
-import AdminOrders from "../components/AdminOrders";
 import AdminNav from "../components/AdminNav";
 
 import Image from "next/image";
