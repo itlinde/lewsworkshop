@@ -211,7 +211,7 @@ const examplePaletteItems = [
 ];
 
 const JewelryMaker = () => {
-  const [items, setItems] = useState([]);
+  const [selectedBeads, setSelectedBeads] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [total, setTotal] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("");
@@ -227,7 +227,7 @@ const JewelryMaker = () => {
     if (!over) return;
 
     if (active.id !== over.id) {
-      setItems((items) => {
+      setSelectedBeads((items) => {
         const oldIndex = items.findIndex((item) => item.dragId === active.id);
         const newIndex = items.findIndex((item) => item.dragId === over.id);
         return arrayMove(items, oldIndex, newIndex);
@@ -236,7 +236,7 @@ const JewelryMaker = () => {
   };
 
   const handleAddItem = (item) => {
-    setItems((prev) => {
+    setSelectedBeads((prev) => {
       const newItem = {
         dragId: `${item.dragId}-${uuidv4()}`,
         name: item.name,
@@ -269,7 +269,7 @@ const JewelryMaker = () => {
       console.error("Error creating order", error);
     }
     setModalOpen(false);
-  }
+  };
 
   return (
     <>
@@ -278,10 +278,10 @@ const JewelryMaker = () => {
           <div className="w-full h-full p-4 bg-backgroundDark rounded-3xl border-4 border-primaryLight justify-center items-center overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
               <SortableContext
-                items={items.map((item) => item.dragId)}
+                items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
               >
-                {items.map((item) => (
+                {selectedBeads.map((item) => (
                   <SortableItem
                     key={item.dragId}
                     item={item}
