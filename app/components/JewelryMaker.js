@@ -253,7 +253,7 @@ const JewelryMaker = () => {
   const handleOrderSubmit = async () => {
     try {
       const orderData = {
-        date_ordered: Date.now(), // DATE????😭
+        date_ordered: Date.now(), // gets current time in ms
         total: total,
         delivery_method: deliveryMethod,
         status: status,
