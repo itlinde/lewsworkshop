@@ -22,7 +22,7 @@ const AdminOrders = () => {
           <div>Beads</div>
         </div>
 
-        {orders.map((order) => (
+        {orders?.map((order) => (
           <div
             key={order.id}
             className="p-4 grid grid-cols-7 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
