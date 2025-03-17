@@ -50,7 +50,6 @@ const AdminBeads = () => {
         method: "POST",
         body: JSON.stringify(beadData),
       });
-      console.log("successfully sent bead POST request");
     } catch (error) {
       console.error("Error creating bead:", error);
     }

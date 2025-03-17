@@ -79,24 +79,19 @@ const OrderModal = ({
           onChange={(e) => setTotal(e.target.value)}
           className="rounded-lg p-1 mx-10 border-primaryLight border-2 focus:outline-primary focus:outline-offset-0 focus:outline-none"
         />
-        <select 
-          id="deliveryMethod" 
+        <select
+          id="deliveryMethod"
           name="deliveryMethod"
           value={deliveryMethod}
           onChange={(e) => setDeliveryMethod(e.target.value)}
           className="rounded-lg p-1 mx-10 border-primaryLight border-2 focus:outline-primary focus:outline-offset-0 focus:outline-none "
         >
-          <option value="" disabled>--Choose a delivery method--</option>
+          <option value="" disabled>
+            --Choose a delivery method--
+          </option>
           <option value="meetup">meetup in person (free)</option>
           <option value="ship">shipping (not free)</option>
         </select>
-        {/* <input
-          type="text"
-          placeholder="Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none"
-        /> */}
         <p className="font-inclusiveSans text-textLight text-sm mx-8 md:mx-16 my-1 text-center">
           !! NOTE: this project is still a work in progress! orders aren't being
           taken at the moment.
@@ -115,8 +110,6 @@ const OrderModal = ({
 const JewelryMaker = () => {
   const [selectedBeads, setSelectedBeads] = useState([]);
   const [beads, setBeads] = useState([]);
-
-  // const beads = examplePaletteItems;
 
   useEffect(() => {
     const run = async () => {
@@ -166,29 +159,47 @@ const JewelryMaker = () => {
 
   const handleOrderSubmit = async () => {
     try {
-      const customerRes = await fetch("/api/customers", {
-        method: "POST",
-        body: JSON.stringify({
-          name: "test",
-          email: "john.doe@example.com",
-        }),
-      });
-      const customerResData = await customerRes.json();
-      const customerId = customerResData.id;
+      // const customerRes = await fetch("/api/customers", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     name: "test",
+      //     email: "john.doe@example.com",
+      //   }),
+      // });
+      // const customerResData = await customerRes.json();
+      // const customerId = customerResData.id;
+      // await fetch("/api/orders", {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     total: "2",
+      //     delivery_method: deliveryMethod,
+      //     country: "CA",
+      //     address: "123 Main St",
+      //     postal_code: "12345",
+      //     status: status,
+      //     customer_id: customerId,
+      //     beads: selectedBeads,
+      //   }),
+      // });
 
-      await fetch("/api/orders", {
+      // const form = document.createElement("form");
+      // form.method = "POST";
+      // form.action = "/api/checkout";
+      // document.body.appendChild(form);
+      // form.submit();
+
+      const response = await fetch("/api/checkout", {
         method: "POST",
         body: JSON.stringify({
-          total: "2",
+          price: 400,
           delivery_method: deliveryMethod,
-          country: "CA",
-          address: "123 Main St",
-          postal_code: "12345",
-          status: status,
-          customer_id: customerId,
-          beads: selectedBeads,
         }),
       });
+
+      const data = await response.json();
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+      }
     } catch (error) {
       console.error("Error creating order", error);
     }
