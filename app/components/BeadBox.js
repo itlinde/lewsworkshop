@@ -25,7 +25,7 @@ const BeadBox = ({
           </svg>
         </button>
         <div className="text-sm text-textDark flex-col justify-end">
-          <p>${price}</p>
+          <p>${(price).toFixed(2)}</p>
           <p>{diameter} mm </p>
         </div>
       </div>

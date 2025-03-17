@@ -22,6 +22,7 @@ const FilterBar = ({
         <option value="grey">Grey</option>
         <option value="black">Black</option>
         <option value="clear">Clear</option>
+        <option value="clear">Pearl</option>
         <option value="mixed">Mixed</option>
       </select>
       {/* <select
@@ -50,11 +51,13 @@ const FilterBar = ({
       >
         <option value="">All Shapes</option>
         <option value="circle">Circle</option>
+        <option value="oval">Oval</option>
         <option value="heart">Heart</option>
         <option value="butterfly">Butterfly</option>
         <option value="star">Star</option>
         <option value="flower">Flower</option>
         <option value="cube">Cube</option>
+        <option value="cube">Teardrop</option>
         <option value="other">Other</option>
       </select>
     </div>

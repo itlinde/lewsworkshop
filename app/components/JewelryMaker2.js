@@ -125,8 +125,8 @@ const JewelryMaker2 = () => {
         shape: item.shape,
         price: item.price,
       };
-      const newBeads = [newItem, ...prev];
-      setTotal(totalSum(newBeads));
+      const newBeads = [...prev, newItem];
+      setTotal(totalSum(newBeads) * 6);
       setLength(totalLength(newBeads));
       return newBeads;
     });
@@ -169,22 +169,32 @@ const JewelryMaker2 = () => {
         <div className="md:hidden block p-2">
           <Header/>
         </div>
-        <div className="absolute w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
+        <div className="z-10 absolute w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
           <div className="hidden md:flex gap-3">
             <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">Keychain</button>
             {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Earrings</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
           </div>
-          <button className="bg-secondary px-5 py-4 rounded-2xl hover:bg-secondaryLight transition ease-in-out duration-75">
+          {/* <button className="bg-secondary px-5 py-4 rounded-2xl hover:bg-secondaryLight transition ease-in-out duration-75">
             Order <span className="font-sans">→</span>
-          </button>
+          </button> */}
+          <div className="flex-col flex items-end">
+            <button disabled className="cursor-not-allowed w-fit bg-backgroundDark text-textLight/40 px-5 py-4 rounded-2xl transition ease-in-out duration-75">
+              Order <span className="font-sans">→</span>
+            </button>
+            <p className="mt-2 w-48 text-xs text-textLight text-right">
+              When you're ready to order, send a screenshot to 
+              <a className="underline hover:no-underline" href="https://www.instagram.com/lewsworkshop/"> @lewsworkshop </a> 
+              on Instagram, and we'll send you a purchase link!
+            </p>
+          </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">
-          <div className="h-full max-h-full px-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="flex flex-col justify-center h-full max-h-full px-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-              <SortableContext
+              <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
               >
@@ -211,9 +221,9 @@ const JewelryMaker2 = () => {
           </div> */}
           <div className="absolute bottom-0 w-full flex items-end justify-between md:mb-6">
             <div>
-              <p className="text-sm md:text-base mb-2 text-textLight">Total: ${total}</p>
+              <p className="text-sm md:text-base mb-2 text-textLight">Total: ${(total).toFixed(2)}</p>
               <div className="bg-backgroundDark/40 px-4 py-2 gap-3 inline-flex items-baseline rounded-2xl">
-                <p className="text-sm md:text-3xl">{length} mm</p>
+                <p className="text-sm md:text-3xl">{(length).toFixed(1)} mm</p>
                 <p className="text-sm text-textLight">{(length * 0.0393701).toFixed(2)} in</p>
               </div>
             </div>
