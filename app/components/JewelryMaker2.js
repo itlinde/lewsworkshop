@@ -169,7 +169,7 @@ const JewelryMaker2 = () => {
         <div className="md:hidden block p-2">
           <Header/>
         </div>
-        <div className="bg-red-200/50 absolute pt-20 w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
+        <div className="absolute pt-20 w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
           <div className="hidden md:flex gap-3">
             <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">Keychain</button>
             {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Earrings</button>
