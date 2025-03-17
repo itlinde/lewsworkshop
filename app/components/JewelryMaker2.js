@@ -63,11 +63,11 @@ const SortableItem = ({ item }) => {
 }
 
 const totalSum = (items) => {
-  return items.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+  return items.reduce((sum, item) => sum + item.price, 0);
 };
 
 const totalLength = (items) => {
-  return items.reduce((sum, item) => sum + item.diameter, 0).toFixed(1);
+  return items.reduce((sum, item) => sum + item.diameter, 0);
 };
 
 const JewelryMaker2 = () => {
@@ -223,7 +223,7 @@ const JewelryMaker2 = () => {
             <div>
               <p className="text-sm md:text-base mb-2 text-textLight">Total: ${(total).toFixed(2)}</p>
               <div className="bg-backgroundDark/40 px-4 py-2 gap-3 inline-flex items-baseline rounded-2xl">
-                <p className="text-sm md:text-3xl">{(length).toFixed(1)} mm</p>
+                <p className="text-sm md:text-3xl">{length} mm</p>
                 <p className="text-sm text-textLight">{(length * 0.0393701).toFixed(2)} in</p>
               </div>
             </div>
