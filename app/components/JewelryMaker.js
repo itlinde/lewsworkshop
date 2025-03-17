@@ -70,31 +70,35 @@ const OrderModal = ({
         }
       }}
     >
-      <div className="flex flex-col items-center justify-center bg-background w-[50vw] min-h-[60vh] rounded-2xl border-4 border-primaryLight gap-3">
+      <div className="flex flex-col items-center justify-center bg-background w-[60vw] min-h-[70vh] max-w-md rounded-2xl border-4 border-primaryLight gap-3">
         <h1 className="text-2xl font-darumadrop text-primary">order info</h1>
         <input
           type="text"
           placeholder="Total"
           value={total}
           onChange={(e) => setTotal(e.target.value)}
-          className="rounded-xl border-2 px-2 py-1"
+          className="rounded-lg p-1 mx-10 border-primaryLight border-2 focus:outline-primary focus:outline-offset-0 focus:outline-none"
         />
-        <input
-          type="text"
-          placeholder="Delivery Method"
+        <select 
+          id="deliveryMethod" 
+          name="deliveryMethod"
           value={deliveryMethod}
           onChange={(e) => setDeliveryMethod(e.target.value)}
-          className="rounded-xl border-2 px-2 py-1"
-        />
-        <input
+          className="rounded-lg p-1 mx-10 border-primaryLight border-2 focus:outline-primary focus:outline-offset-0 focus:outline-none "
+        >
+          <option value="" disabled>--Choose a delivery method--</option>
+          <option value="meetup">meetup in person (free)</option>
+          <option value="ship">shipping (not free)</option>
+        </select>
+        {/* <input
           type="text"
           placeholder="Status"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="rounded-xl border-2 px-2 py-1"
-        />
-        <p className="font-inclusiveSans text-textLight text-sm mx-16 my-1 text-center">
-          note: this project is still a work in progress! orders aren't being
+          className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none"
+        /> */}
+        <p className="font-inclusiveSans text-textLight text-sm mx-8 md:mx-16 my-1 text-center">
+          !! NOTE: this project is still a work in progress! orders aren't being
           taken at the moment.
         </p>
         <button
