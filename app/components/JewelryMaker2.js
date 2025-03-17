@@ -126,7 +126,7 @@ const JewelryMaker2 = () => {
         price: item.price,
       };
       const newBeads = [...prev, newItem];
-      setTotal(totalSum(newBeads) * 6);
+      setTotal(totalSum(newBeads) * 3);
       setLength(totalLength(newBeads));
       return newBeads;
     });
