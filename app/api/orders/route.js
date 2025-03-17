@@ -11,7 +11,7 @@ export async function GET(req) {
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
-};
+}
 
 // request to add a new order
 export async function POST(req) {
@@ -20,14 +20,34 @@ export async function POST(req) {
     const body = await req.json();
 
     const supabase = await createClient();
-    const res = await supabase.from("orders").insert({ 
-                                                      total: body.total,
-                                                      status: body.status,
-                                                      delivery_method: body.delivery_method,
-                                                      customer_id: body.customer_id,
-                                                      date_ordered: body.date_ordered
-    })
-    return NextResponse.json(res);
+
+    const { data: orderData, error: orderError } = await supabase
+      .from("orders")
+      .insert({
+        total: body.total,
+        status: body.status,
+        delivery_method: body.delivery_method,
+        country: body.country,
+        address: body.address,
+        postal_code: body.postal_code,
+        customer_id: body.customer_id,
+        date_ordered: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    const beads = body.beads;
+
+    for (const bead of beads) {
+      const { data: beadData, error: beadError } = await supabase
+        .from("orders_beads")
+        .insert({
+          order_id: orderData.id,
+          bead_id: bead.id,
+        });
+    }
+
+    return NextResponse.json(orderData);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

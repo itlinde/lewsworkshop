@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DndContext,
   TouchSensor,
@@ -41,7 +41,7 @@ const SortableItem = ({ item }) => {
       <div className="flex justify-center items-center mb-2 rounded cursor-pointer aspect-square">
         <Image
           className="w-16 h-16 place-self-center"
-          src={item.image}
+          src={item.imagePath}
           width={400}
           height={400}
           alt="beeaadddd"
@@ -98,7 +98,7 @@ const OrderModal = ({
           taken at the moment.
         </p>
         <button
-          onClick={() => handleOrderSubmit()}
+          onClick={handleOrderSubmit}
           className="font-darumadrop bg-primary text-background text-2xl px-5 py-2 rounded-3xl hover:bg-secondary transition ease-in-out duration-200"
         >
           Order
@@ -108,116 +108,25 @@ const OrderModal = ({
   );
 };
 
-const examplePaletteItems = [
-  {
-    dragId: "white-pearl",
-    name: "🦋",
-    colour: "white",
-    shape: "circle",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead1.png",
-  },
-  {
-    dragId: "metal-heart",
-    name: "💖",
-    colour: "other",
-    shape: "heart",
-    diameter: 8,
-    stock: 100,
-    image: "/bead-images/bead2.png",
-  },
-  {
-    dragId: "blue-circle",
-    name: "✨",
-    colour: "blue",
-    shape: "circle",
-    diameter: 12,
-    stock: 100,
-    image: "/bead-images/bead3.png",
-  },
-  {
-    dragId: "white-circle",
-    name: "🌺",
-    colour: "white",
-    shape: "circle",
-    diameter: 15,
-    stock: 100,
-    image: "/bead-images/bead4.png",
-  },
-  {
-    dragId: "purple-circle",
-    name: "❤️",
-    colour: "purple",
-    shape: "circle",
-    diameter: 8,
-    stock: 100,
-    image: "/bead-images/bead6.png",
-  },
-  {
-    dragId: "pink-circle",
-    name: "⚪",
-    colour: "pink",
-    shape: "circle",
-    diameter: 6,
-    stock: 100,
-    image: "/bead-images/bead8.png",
-  },
-  {
-    dragId: "pink-butterfly",
-    name: "⬛",
-    colour: "pink",
-    shape: "butterfly",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead9.png",
-  },
-  {
-    dragId: "yellow-pearl",
-    name: "⬛",
-    colour: "yellow",
-    shape: "circle",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead10.png",
-  },
-  {
-    dragId: "clear-star",
-    name: "⬛",
-    colour: "other",
-    shape: "star",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead11.png",
-  },
-  {
-    dragId: "pink-star",
-    name: "⬛",
-    colour: "pink",
-    shape: "star",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead12.png",
-  },
-  {
-    dragId: "small-white-pearl",
-    name: "⬛",
-    colour: "white",
-    shape: "circle",
-    diameter: 10,
-    stock: 100,
-    image: "/bead-images/bead13.png",
-  },
-];
-
 const JewelryMaker = () => {
   const [selectedBeads, setSelectedBeads] = useState([]);
+  const [beads, setBeads] = useState([]);
+
+  // const beads = examplePaletteItems;
+
+  useEffect(() => {
+    const run = async () => {
+      const res = await fetch("/api/beads");
+      const beadsData = await res.json();
+      setBeads(beadsData);
+    };
+    run();
+  }, []);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [total, setTotal] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("");
   const [status, setStatus] = useState("");
-
-  const paletteItems = examplePaletteItems;
 
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
@@ -238,10 +147,11 @@ const JewelryMaker = () => {
   const handleAddItem = (item) => {
     setSelectedBeads((prev) => {
       const newItem = {
-        dragId: `${item.dragId}-${uuidv4()}`,
+        dragId: `${item.id}-${uuidv4()}`,
+        id: item.id,
         name: item.name,
         stock: item.stock,
-        image: item.image,
+        imagePath: item.image_path,
         diameter: item.diameter,
         colour: item.colour,
         shape: item.shape,
@@ -252,18 +162,28 @@ const JewelryMaker = () => {
 
   const handleOrderSubmit = async () => {
     try {
-      const orderData = {
-        date_ordered: Date.now(), // gets current time in ms
-        total: total,
-        delivery_method: deliveryMethod,
-        status: status,
-        customer_id: null,
-        beads: null,
-      };
+      const customerRes = await fetch("/api/customers", {
+        method: "POST",
+        body: JSON.stringify({
+          name: "test",
+          email: "john.doe@example.com",
+        }),
+      });
+      const customerResData = await customerRes.json();
+      const customerId = customerResData.id;
 
       await fetch("/api/orders", {
         method: "POST",
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({
+          total: "2",
+          delivery_method: deliveryMethod,
+          country: "CA",
+          address: "123 Main St",
+          postal_code: "12345",
+          status: status,
+          customer_id: customerId,
+          beads: selectedBeads,
+        }),
       });
     } catch (error) {
       console.error("Error creating order", error);
@@ -326,15 +246,15 @@ const JewelryMaker = () => {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-4 pr-4 overflow-y-scroll [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full">
-              {paletteItems.map((item) => (
+              {beads?.map((item) => (
                 <button
-                  key={item.dragId}
+                  key={item.id}
                   onClick={() => handleAddItem(item)}
                   className="bg-backgroundDark rounded-lg aspect-square hover:bg-background hover:scale-110 active:scale-125 transition ease-in-out duration-200"
                 >
                   <Image
                     className="w-16 h-16 place-self-center"
-                    src={item.image}
+                    src={item.image_path}
                     width={400}
                     height={400}
                     alt="beeaadddd"

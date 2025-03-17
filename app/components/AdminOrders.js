@@ -4,9 +4,12 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetch("/api/orders")
-      .then((res) => res.json())
-      .then((orders) => setOrders(orders));
+    const run = async () => {
+      const res = await fetch("/api/orders", { method: "GET" });
+      const orders = await res.json();
+      setOrders(orders);
+    };
+    run();
   }, []);
 
   return (

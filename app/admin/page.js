@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import AdminNav from "../components/AdminNav";
@@ -18,7 +18,9 @@ export default function Home() {
   return !entered ? (
     <div className="">
       <div className="flex flex-col mt-16 items-center bg-primary w-96 p-10 rounded-xl mx-auto space-y-3">
-        <h2 className="font-inclusiveSans text-base text-white">password pls:</h2>
+        <h2 className="font-inclusiveSans text-base text-white">
+          password pls:
+        </h2>
         <div className="">
           <input
             type="text"
@@ -32,7 +34,13 @@ export default function Home() {
           <button type="submit"></button>
         </div>
       </div>
-      <Image className="w-96 object-fit place-self-center mt-4 rounded-xl border-4 border-primaryLight" src="/lewlery.png" width={500} height={400} alt="drawing of olivia"/>
+      <Image
+        className="w-96 object-fit place-self-center mt-4 rounded-xl border-4 border-primaryLight"
+        src="/lewlery.png"
+        width={500}
+        height={400}
+        alt="drawing of olivia"
+      />
     </div>
   ) : (
     <AdminNav />
