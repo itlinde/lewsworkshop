@@ -38,6 +38,8 @@ const SortableItem = ({ item }) => {
     transition,
   };
 
+  const scaledSize = item.diameter * 7;
+
   return (
     <div
       ref={setNodeRef}
@@ -48,10 +50,11 @@ const SortableItem = ({ item }) => {
     >
       <div className="cursor-pointer">
         <Image
-          className="w-16 place-self-center"
+          className="w-auto h-auto object-cover place-self-center"
           src={item.imagePath}
-          width={300}
-          height={300}
+          width={400}
+          height={400}
+          style={{ height: `${scaledSize}px` }} 
           alt="beeaadddd"
         />
       </div>
@@ -132,11 +135,11 @@ const JewelryMaker2 = () => {
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 p-2 md:p-6 absolute md:static top-[50vh]">
+      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:p-6 absolute md:static top-[50vh]">
         <div className="hidden md:block">
           <Header/>
         </div>
-        <div className="fixed w-full pr-4 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
+        <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
           <FilterBar filters={filters} setFilters={setFilters}/>
           <button className="group flex gap-2 items-center text-textDark">
             <p className="underline group-hover:no-underline">Recommended</p>
@@ -144,7 +147,7 @@ const JewelryMaker2 = () => {
           </button>
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid grid-cols-3 gap-2 max-h-full overflow-y-scroll mt-12 md:mt-0">
+          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-0 mt-12 md:mt-0">
             {Array.isArray(beads) && beads.map((item) => (
               <div key={item.id}>
                 <BeadBox

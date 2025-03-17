@@ -10,9 +10,11 @@ const BeadBox = ({
 }) => {
   const [toggleInfo, setToggleInfo] = useState(false);
 
+  const scaledSize = diameter * 7;
+
   return(
-    <div className="group relative block size-28 md:size-36 border-textDark/15 border-[1.5px] place-items-center place-content-center rounded-2xl text-center">
-      <Image className="w-full h-full p-2 object-scale-down" src={imagePath} width={300} height={300} alt=""/>
+    <div className="group relative block size-[118px] md:size-36 border-textDark/15 border-[1.5px] place-items-center place-content-center rounded-2xl text-center">
+      <Image className="object-contain" src={imagePath} style={{ width: `${Math.min(scaledSize, 144)}px`, height: `${Math.min(scaledSize, 144)}px` }} width={300} height={300} alt=""/>
       <div className="hidden group-active:flex md:group-hover:flex bg-backgroundDark/50 absolute backdrop-blur-sm w-28 md:w-36 rounded-b-2xl bottom-0 justify-between items-center py-2 px-3">
         <button 
           onClick={onClick} 

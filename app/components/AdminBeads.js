@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -71,7 +72,7 @@ const AdminBeads = () => {
   return (
     <>
       <div className="w-full flex flex-row gap-4">
-        <div className="w-96 bg-primaryLight py-8 flex flex-col justify-center gap-3 font-inclusiveSans rounded-xl shadow-lg border-4 border-primary/20">
+        <div className="w-96 h-[500px] bg-primaryLight py-8 flex flex-col justify-center gap-3 font-inclusiveSans rounded-xl shadow-lg border-4 border-primary/20">
           <p className="text-center">New bead:</p>
           <div
             {...getRootProps()}
@@ -152,11 +153,14 @@ const AdminBeads = () => {
             className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none "
           >
             <option value="circle">Circle</option>
+            <option value="oval">Oval</option>
             <option value="heart">Heart</option>
             <option value="butterfly">Butterfly</option>
             <option value="star">Star</option>
             <option value="flower">Flower</option>
             <option value="cube">Cube</option>
+            <option value="cube">Natural</option>
+            <option value="cube">Teardrop</option>
             <option value="other">Other</option>
           </select>
           <input
@@ -194,7 +198,7 @@ const AdminBeads = () => {
               className="p-4 grid grid-cols-8 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
             >
               <div className="break-words">{bead.id}</div>
-              <img src={bead.image_path} alt="bead" className="w-24" />
+              <Image src={bead.image_path} width={300} height={300} style={{ height: `${bead.diameter_mm * 10}px` }} alt="bead" className="w-auto h-auto object-contain" />
               <div className="break-words">{bead.name}</div>
               <div className="break-words">{bead.diameter_mm}</div>
               <div className="break-words">{bead.price}</div>
