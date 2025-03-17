@@ -132,7 +132,7 @@ const JewelryMaker2 = () => {
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background h-dvh w-full md:w-auto shrink-0 p-2 md:p-6 absolute md:static top-[50vh]">
+      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 p-2 md:p-6 absolute md:static top-[50vh]">
         <div className="hidden md:block">
           <Header/>
         </div>
@@ -144,7 +144,7 @@ const JewelryMaker2 = () => {
           </button>
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid grid-cols-3 gap-2 h-full overflow-scroll mt-12 md:mt-0">
+          <div className="grid grid-cols-3 gap-2 max-h-full overflow-y-scroll mt-12 md:mt-0">
             {Array.isArray(beads) && beads.map((item) => (
               <div key={item.id}>
                 <BeadBox
