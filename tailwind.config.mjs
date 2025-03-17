@@ -8,14 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#FEF9F2",
+        background: "#fffbf6",
         backgroundDark: "#EFEAE3",
-        primary: "#789DBC",
+        primary: "#8db0cd",
         primaryLight: "#CBDDED",
-        secondary: "#D78A9D",
-        secondaryLight: "#FFE3E3",
-        textDark: "#535353",
+        primaryDark: "#789DBC",
+        secondary: "#CBDDED",
+        secondaryLight: "#DEEEFC",
+        textDark: "#424242",
         textLight: "#7A736B",
+        accent: "#edc0cb",
       },
       fontFamily: {
         inclusiveSans: ["var(--font-inclusive-sans)", "Arial", "serif"],
