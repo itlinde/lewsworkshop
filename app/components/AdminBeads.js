@@ -139,7 +139,10 @@ const AdminBeads = () => {
             <option value="purple">Purple</option>
             <option value="pink">Pink</option>
             <option value="white">White</option>
+            <option value="grey">Grey</option>
             <option value="black">Black</option>
+            <option value="clear">Clear</option>
+            <option value="mixed">Mixed</option>
           </select>
           <select
             id="shape"
