@@ -18,6 +18,8 @@ export default {
         textDark: "#424242",
         textLight: "#7A736B",
         accent: "#edc0cb",
+        successGreen: "#C8DA95",
+        failRed: "#F27878",
       },
       fontFamily: {
         inclusiveSans: ["var(--font-inclusive-sans)", "Arial", "serif"],

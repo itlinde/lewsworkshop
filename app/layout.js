@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Inclusive_Sans, Darumadrop_One } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+
 
 const inclusiveSans = Inclusive_Sans({
   variable: "--font-inclusive-sans",
@@ -21,7 +23,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inclusiveSans.variable} ${darumadropOne.variable} antialiased`}>{children}</body>
+      <body className={`${inclusiveSans.variable} ${darumadropOne.variable} antialiased`}>
+        {children}
+        <Analytics/>
+        </body>
     </html>
   );
 }
