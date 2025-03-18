@@ -1,12 +1,28 @@
 import { createClient } from "../../../utils/supabase/server";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { parse } from "url";
 
-// fetch all bead data
+// fetch beads
 export async function GET(req) {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.from("beads").select();
+    // const { data } = await supabase.from("beads").select();
+
+    // Extract query parameters (e.g., ?color=red&size=6&shape=round)
+    const { query } = parse(req.url, true);
+    const { colour, size, shape } = query;
+
+    // Start building the query
+    let queryBuilder = supabase.from("beads").select("*");
+
+    // Apply filters if they exist
+    if (colour) queryBuilder = queryBuilder.eq("colour", colour);
+    if (size) queryBuilder = queryBuilder.eq("diameter_mm", size);
+    if (shape) queryBuilder = queryBuilder.eq("shape", shape);
+
+    // fetch filtered data
+    const { data } = await queryBuilder;
 
     return NextResponse.json(data);
   } catch (error) {
