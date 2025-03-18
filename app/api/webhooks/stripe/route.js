@@ -1,8 +1,8 @@
 // app/api/webhooks/stripe/route.js
 import { NextResponse } from "next/server";
 import { stripe } from "../../../../lib/stripe";
-import { createOrder } from "../../../../lib/orderUtils";
 import { createCustomer } from "../../../../lib/customerUtils";
+import { updateOrder } from "../../../../lib/orderUtils";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -31,15 +31,21 @@ export async function POST(req) {
     });
     const customerId = customerRes.id;
 
-    await createOrder({
-      postal_code: session.customer_details.address.postal_code || "test",
-      country: session.customer_details.address.country || "test",
+    const metadata = session.metadata;
+
+    const orderRes = await updateOrder(metadata.pending_order_id, {
+      status: "processing",
+      delivery_method: "test",
       customer_id: customerId,
-      delivery_method: session.metadata.delivery_method,
-      price: session.metadata.price,
-      address: session.customer_details.address.line1 || "test",
-      status: "pending",
+      country: session.customer_details.address.country,
+      postal_code: session.customer_details.address.postal_code,
     });
+
+    if (orderRes.ok) {
+      return NextResponse.json(orderRes.orderData);
+    } else {
+      return NextResponse.json({ error: orderRes.error }, { status: 400 });
+    }
   }
 
   return NextResponse.json({ received: true });
