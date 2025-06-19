@@ -37,7 +37,6 @@ export async function POST(req) {
     const headersList = await headers();
     const origin = headersList.get("origin");
 
-    // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -46,13 +45,14 @@ export async function POST(req) {
             product_data: {
               name: "Lewlery keychain!",
             },
-            unit_amount: price, // Dynamic amount from request
+            unit_amount: price,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
       // add session id stuff later
+      // wtf is session id
       success_url: `${origin}/checkout-success`,
       cancel_url: `${origin}/checkout-cancelled`,
       metadata: {

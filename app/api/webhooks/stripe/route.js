@@ -23,29 +23,32 @@ export async function POST(req) {
     );
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const customerRes = await createCustomer({
-      name: session.customer_details.name,
-      email: session.customer_details.email,
-    });
-    const customerId = customerRes.id;
+  try {
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const customerRes = await createCustomer({
+        name: session.customer_details.name,
+        email: session.customer_details.email,
+      });
+      const customerId = customerRes.id;
 
-    const metadata = session.metadata;
+      const metadata = session.metadata;
 
-    const orderRes = await updateOrder(metadata.pending_order_id, {
-      status: "processing",
-      delivery_method: "test",
-      customer_id: customerId,
-      country: session.customer_details.address.country,
-      postal_code: session.customer_details.address.postal_code,
-    });
+      const orderRes = await updateOrder(metadata.pending_order_id, {
+        status: "processing",
+        delivery_method: "test",
+        customer_id: customerId,
+        country: session.customer_details.address.country,
+        postal_code: session.customer_details.address.postal_code,
+      });
 
-    if (orderRes.ok) {
-      return NextResponse.json(orderRes.orderData);
-    } else {
-      return NextResponse.json({ error: orderRes.error }, { status: 400 });
+      if (!orderRes.ok) {
+        throw new Error("Failed to update order");
+      }
     }
+  } catch (error) {
+    console.error("Webhook processing error:", error);
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

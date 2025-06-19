@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function CheckoutSuccess() {
+export default function CheckoutFailed() {
   return (
     <div>
       <h1>Checkout Cancelled</h1>
