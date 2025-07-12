@@ -142,7 +142,7 @@ const JewelryMaker2 = () => {
       setSelectedBeads((prev) => prev.filter((item) => item.dragId !== active.id));
 
       // Update totals
-      setTotal(totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) * 3);
+      setTotal(totalSum(selectedBeads.filter((item) => item.dragId !== active.id)));
       setLength(totalLength(selectedBeads.filter((item) => item.dragId !== active.id)));
       return;
     }
@@ -170,7 +170,7 @@ const JewelryMaker2 = () => {
         price: item.price,
       };
       const newBeads = [...prev, newItem];
-      setTotal(totalSum(newBeads) * 3);
+      setTotal(totalSum(newBeads) / 100);
       setLength(totalLength(newBeads));
       return newBeads;
     });
