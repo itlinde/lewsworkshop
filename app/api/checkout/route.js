@@ -43,7 +43,8 @@ export async function POST(req) {
             product_data: {
               name: "Lewlery keychain!",
             },
-            unit_amount: price,
+            // im not sure why i blatantly lied to isabella about stripe storing price as cents but we need to do this to get price in dollars
+            unit_amount: price / 100,
           },
           quantity: 1,
         },
