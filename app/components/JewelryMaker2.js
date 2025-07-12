@@ -142,7 +142,13 @@ const JewelryMaker2 = () => {
       setSelectedBeads((prev) => prev.filter((item) => item.dragId !== active.id));
 
       // Update totals
-      setTotal(totalSum(selectedBeads.filter((item) => item.dragId !== active.id)));
+      setTotal(() => {
+        if (selectedBeads.length == 1) {
+          return 0;
+        } else {
+          return (totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) / 100) + 5;
+        }
+      });
       setLength(totalLength(selectedBeads.filter((item) => item.dragId !== active.id)));
       return;
     }
@@ -264,11 +270,6 @@ const JewelryMaker2 = () => {
             >
               Order <span className="font-sans">→</span>
             </button>
-            {/* <p className="mt-2 w-48 text-xs text-textLight text-right">
-              When you're ready to order, send a screenshot of your *entire* screen to 
-              <a className="underline hover:no-underline" href="https://www.instagram.com/lewsworkshop/" target="_blank"> @lewsworkshop </a> 
-              on Instagram, and we'll send you a purchase link!
-            </p> */}
           </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">

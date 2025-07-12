@@ -22,7 +22,7 @@ const FilterBar = ({
         <option value="grey">Grey</option>
         <option value="black">Black</option>
         <option value="clear">Clear</option>
-        <option value="clear">Pearl</option>
+        <option value="pearl">Pearl</option>
         <option value="mixed">Mixed</option>
       </select>
       {/* <select
