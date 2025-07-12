@@ -15,8 +15,6 @@ export async function POST(req) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
   } catch (err) {
-    console.error(`Webhook Error: ${err.message}`);
-    console.error("Full error:", err);
     return NextResponse.json(
       { error: `Webhook Error: ${err.message}` },
       { status: 400 }
@@ -26,6 +24,7 @@ export async function POST(req) {
   try {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
+
       const customerRes = await createCustomer({
         name: session.customer_details.name,
         email: session.customer_details.email,
@@ -47,7 +46,6 @@ export async function POST(req) {
       }
     }
   } catch (error) {
-    console.error("Webhook processing error:", error);
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
-
-import { createOrder } from "../../../lib/orderUtils";
+import { createDraftOrder, updateOrder } from "../../../lib/orderUtils";
 
 import { stripe } from "../../../lib/stripe";
 
@@ -25,10 +24,9 @@ export async function POST(req) {
       );
     }
 
-    const orderRes = await createOrder({
+    const orderRes = await createDraftOrder({
       price: price,
       address: "test",
-      status: "pending",
       beads: body.beads,
     });
 
@@ -51,15 +49,16 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      // add session id stuff later
-      // wtf is session id
       success_url: `${origin}/checkout-success`,
       cancel_url: `${origin}/checkout-cancelled`,
       metadata: {
         price: price,
-        delivery_method: body.delivery_method,
         pending_order_id: orderId,
       },
+    });
+
+    await updateOrder(orderId, {
+      session_id: session.id,
     });
 
     return NextResponse.json({ redirectUrl: session.url });
