@@ -10,6 +10,8 @@ export async function POST(req) {
     const body = await req.json();
     const price = body.price;
 
+    console.log('body', body)
+
     if (price < 100) {
       return NextResponse.json(
         { error: "Price must be >= 1.00 CAD" },
@@ -44,7 +46,7 @@ export async function POST(req) {
               name: "Lewlery keychain!",
             },
             // im not sure why i blatantly lied to isabella about stripe storing price as cents but we need to do this to get price in dollars
-            unit_amount: price / 100,
+            unit_amount: price,
           },
           quantity: 1,
         },

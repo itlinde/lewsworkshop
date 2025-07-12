@@ -72,7 +72,7 @@ const SortableItem = ({ item, activeBead }) => {
     >
       <div className="cursor-pointer">
         <Image
-          className="w-auto h-auto object-cover place-self-center hover:opacity-80"
+          className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
           src={item.imagePath}
           width={400}
           height={400}
@@ -170,7 +170,7 @@ const JewelryMaker2 = () => {
         price: item.price,
       };
       const newBeads = [...prev, newItem];
-      setTotal(totalSum(newBeads) / 100);
+      setTotal((totalSum(newBeads) / 100) + 5);
       setLength(totalLength(newBeads));
       return newBeads;
     });
@@ -352,25 +352,6 @@ const JewelryMaker2 = () => {
           onCancel={() => {setShowResetWarning(false)}}
           onConfirm={handleReset}
         />
-        // <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50">
-        //   <div className="bg-background p-16 rounded-2xl shadow-md border-[1.5px] border-textLight/15">
-        //     <p className="mb-6">Are you sure you want to restart? <br/> This will remove all selected beads.</p>
-        //     <div className="flex justify-center gap-4">
-        //       <button 
-        //         onClick={() => setShowResetWarning(false)} 
-        //         className="px-5 py-3 bg-background text-textLight border-[1.5px] border-textLight rounded-2xl hover:bg-textLight/10 active:bg-textLight/25 transition"
-        //       >
-        //         Cancel
-        //       </button>
-        //       <button 
-        //         onClick={handleReset} 
-        //         className="px-5 py-3 bg-background text-failRed border-[1.5px] border-failRed rounded-2xl hover:bg-failRed/15 active:bg-failRed/30 transition"
-        //       >
-        //         Confirm
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
       )}
     </div>
   );
