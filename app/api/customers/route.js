@@ -19,22 +19,8 @@ export async function POST(req) {
     // make body of post request
     const body = await req.json();
 
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("customers")
-      .upsert(
-        {
-          name: body.name,
-          email: body.email,
-        },
-        {
-          onConflict: "email",
-        }
-      )
-      .select()
-      .single();
-
-    return NextResponse.json(data);
+    const customerRes = await createCustomer(body);
+    return NextResponse.json(customerRes);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

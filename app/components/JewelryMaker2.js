@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import dotGrid from "../../public/dot-grid.svg";
 import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
 import undoIcon from "../../public/icons/undo-icon.svg";
@@ -76,13 +76,13 @@ const SortableItem = ({ item, activeBead }) => {
           src={item.imagePath}
           width={400}
           height={400}
-          style={{ height: `${scaledSize}px` }} 
+          style={{ height: `${scaledSize}px` }}
           alt="beeaadddd"
         />
       </div>
     </div>
   );
-}
+};
 
 const totalSum = (items) => {
   return items.reduce((sum, item) => sum + item.price, 0);
@@ -95,7 +95,7 @@ const totalLength = (items) => {
 const JewelryMaker2 = () => {
   const [beads, setBeads] = useState([]);
   const [selectedBeads, setSelectedBeads] = useState([]);
-  const [total, setTotal] = useState(0.00);
+  const [total, setTotal] = useState(0.0);
   const [length, setLength] = useState(0.0);
   const [filters, setFilters] = useState({ colour: "", size: "", shape: "" });
   const [activeBead, setActiveBead] = useState(null); // active bead = the bead being dragged
@@ -112,8 +112,8 @@ const JewelryMaker2 = () => {
     run();
   }, [filters]);
 
-  const sensors = useSensors (
-    useSensor(MouseSensor), 
+  const sensors = useSensors(
+    useSensor(MouseSensor),
     useSensor(TouchSensor, {
       activationConstraint: {
         delay: 200, // Requires hold for 200ms before dragging starts
@@ -176,6 +176,22 @@ const JewelryMaker2 = () => {
     });
   };
 
+  const handleOrderSubmit = async () => {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      body: JSON.stringify({
+        price: total * 100, // stripe takes cents
+        delivery_method: "pickup",
+        beads: selectedBeads,
+      }),
+    });
+    const data = await res.json();
+    console.log("data", data);
+    if (data.redirectUrl) {
+      window.location.href = data.redirectUrl;
+    }
+  };
+
   const handleReset = () => {
     setSelectedBeads([]);
     setTotal(0);
@@ -188,57 +204,71 @@ const JewelryMaker2 = () => {
       {/* Side bar */}
       <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:p-6 absolute md:static top-[50vh]">
         <div className="hidden md:block">
-          <Header/>
+          <Header />
         </div>
         <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
-          <FilterBar filters={filters} setFilters={setFilters}/>
+          <FilterBar filters={filters} setFilters={setFilters} />
           <button className="group flex gap-2 items-center text-textDark">
             <p className="underline group-hover:no-underline">Recommended</p>
-            <Image src={dropdownArrow} alt="" aria-hidden="true"/>
+            <Image src={dropdownArrow} alt="" aria-hidden="true" />
           </button>
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
           <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-0 mt-12 md:mt-0">
-            {Array.isArray(beads) && beads.map((item) => (
-              <div key={item.id}>
-                <BeadBox
-                  onClick={(e) => handleAddItem(item, e)}
-                  id={item.id}
-                  imagePath={item.image_path}
-                  price={item.price}
-                  diameter={item.diameter_mm}
-                />
-              </div>
-            ))}
+            {Array.isArray(beads) &&
+              beads.map((item) => (
+                <div key={item.id}>
+                  <BeadBox
+                    onClick={(e) => handleAddItem(item, e)}
+                    id={item.id}
+                    imagePath={item.image_path}
+                    price={item.price}
+                    diameter={item.diameter_mm}
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </section>
 
       {/* Main Canvas */}
       <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6">
-        <Image className="-z-10 absolute top-0 left-0 object-none object-left-top max-h-full max-w-full" priority src={dotGrid} alt="" aria-hidden="true"/>
+        <Image
+          className="-z-10 absolute top-0 left-0 object-none object-left-top max-h-full max-w-full"
+          priority
+          src={dotGrid}
+          alt=""
+          aria-hidden="true"
+        />
         <div className="md:hidden block p-2">
-          <Header/>
+          <Header />
         </div>
         <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
           <div className="hidden md:flex gap-3">
-            <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">Keychain</button>
+            <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
+              Keychain
+            </button>
             {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Earrings</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
           </div>
-          {/* <button className="bg-secondary px-5 py-4 rounded-2xl hover:bg-secondaryLight transition ease-in-out duration-75">
-            Order <span className="font-sans">→</span>
-          </button> */}
-          <div className="flex-col flex items-end">
-            <button disabled className="cursor-not-allowed w-fit bg-backgroundDark text-textLight/40 px-5 py-4 rounded-2xl transition ease-in-out duration-75">
+          <div className="flex-col flex items-end z-10">
+            <button
+              onClick={handleOrderSubmit}
+              className={`px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
+                selectedBeads.length === 0
+                  ? "bg-backgroundDark cursor-not-allowed"
+                  : "bg-secondary hover:bg-secondaryLight cursor-pointer"
+              }`}
+              disabled={selectedBeads.length === 0}
+            >
               Order <span className="font-sans">→</span>
             </button>
-            <p className="mt-2 w-48 text-xs text-textLight text-right">
+            {/* <p className="mt-2 w-48 text-xs text-textLight text-right">
               When you're ready to order, send a screenshot of your *entire* screen to 
               <a className="underline hover:no-underline" href="https://www.instagram.com/lewsworkshop/" target="_blank"> @lewsworkshop </a> 
               on Instagram, and we'll send you a purchase link!
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">
@@ -290,10 +320,14 @@ const JewelryMaker2 = () => {
           </div> */}
           <div className="absolute bottom-0 w-full flex items-end justify-between md:mb-6">
             <div>
-              <p className="text-sm md:text-base mb-2 text-textLight">Total: ${(total).toFixed(2)}</p>
+              <p className="text-sm md:text-base mb-2 text-textLight">
+                Total: ${total.toFixed(2)}
+              </p>
               <div className="bg-backgroundDark/40 px-4 py-2 gap-3 inline-flex items-baseline rounded-2xl">
                 <p className="text-sm md:text-3xl">{length} mm</p>
-                <p className="text-sm text-textLight">{(length * 0.0393701).toFixed(2)} in</p>
+                <p className="text-sm text-textLight">
+                  {(length * 0.0393701).toFixed(2)} in
+                </p>
               </div>
             </div>
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">

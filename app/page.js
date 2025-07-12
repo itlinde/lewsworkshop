@@ -12,20 +12,8 @@ export default function Home() {
         <p className="italic text-textLight">(Mobile page coming soon)</p>
       </div>
       <div className="hidden md:block">
-        <JewelryMaker2/>
+        <JewelryMaker2 />
       </div>
     </>
-    // <div>
-    //   <Header />
-    //   <main className="flex justify-center">
-    //     <div className="w-[80vw]">
-    //       <div className="h-[calc(100vh-50px)] flex items-center">
-    //         <JewelryMaker />
-    //       </div>
-    //       <Faq />
-    //     </div>
-    //   </main>
-    //   <Footer />
-    // </div>
   );
 }
