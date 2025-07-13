@@ -72,7 +72,7 @@ const SortableItem = ({ item, activeBead }) => {
     >
       <div className="cursor-pointer">
         <Image
-          className="w-auto h-auto object-cover place-self-center hover:opacity-80"
+          className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
           src={item.imagePath}
           width={400}
           height={400}
@@ -142,7 +142,13 @@ const JewelryMaker2 = () => {
       setSelectedBeads((prev) => prev.filter((item) => item.dragId !== active.id));
 
       // Update totals
-      setTotal(totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) * 3);
+      setTotal(() => {
+        if (selectedBeads.length == 1) {
+          return 0;
+        } else {
+          return (totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) / 100) + 5;
+        }
+      });
       setLength(totalLength(selectedBeads.filter((item) => item.dragId !== active.id)));
       return;
     }
@@ -170,7 +176,7 @@ const JewelryMaker2 = () => {
         price: item.price,
       };
       const newBeads = [...prev, newItem];
-      setTotal(totalSum(newBeads) * 3);
+      setTotal((totalSum(newBeads) / 100) + 5);
       setLength(totalLength(newBeads));
       return newBeads;
     });
@@ -264,11 +270,6 @@ const JewelryMaker2 = () => {
             >
               Order <span className="font-sans">→</span>
             </button>
-            {/* <p className="mt-2 w-48 text-xs text-textLight text-right">
-              When you're ready to order, send a screenshot of your *entire* screen to 
-              <a className="underline hover:no-underline" href="https://www.instagram.com/lewsworkshop/" target="_blank"> @lewsworkshop </a> 
-              on Instagram, and we'll send you a purchase link!
-            </p> */}
           </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">
@@ -352,25 +353,6 @@ const JewelryMaker2 = () => {
           onCancel={() => {setShowResetWarning(false)}}
           onConfirm={handleReset}
         />
-        // <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50">
-        //   <div className="bg-background p-16 rounded-2xl shadow-md border-[1.5px] border-textLight/15">
-        //     <p className="mb-6">Are you sure you want to restart? <br/> This will remove all selected beads.</p>
-        //     <div className="flex justify-center gap-4">
-        //       <button 
-        //         onClick={() => setShowResetWarning(false)} 
-        //         className="px-5 py-3 bg-background text-textLight border-[1.5px] border-textLight rounded-2xl hover:bg-textLight/10 active:bg-textLight/25 transition"
-        //       >
-        //         Cancel
-        //       </button>
-        //       <button 
-        //         onClick={handleReset} 
-        //         className="px-5 py-3 bg-background text-failRed border-[1.5px] border-failRed rounded-2xl hover:bg-failRed/15 active:bg-failRed/30 transition"
-        //       >
-        //         Confirm
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
       )}
     </div>
   );
