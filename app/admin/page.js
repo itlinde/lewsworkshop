@@ -35,7 +35,7 @@ export default function Home() {
         </div>
       </div>
       <Image
-        className="w-96 object-fit place-self-center mt-4 rounded-xl border-4 border-primaryLight"
+        className="w-96 object-fit place-self-center mt-4 selection:rounded-xl border-4 border-primaryLight"
         src="/lewlery.png"
         width={500}
         height={400}

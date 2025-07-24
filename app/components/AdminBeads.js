@@ -70,7 +70,7 @@ const AdminBeads = () => {
 
   return (
     <>
-      <div className="w-full flex flex-row gap-4">
+      <div className="font-inclusiveSans w-full flex flex-row gap-4">
         <div className="w-96 h-[500px] bg-primaryLight py-8 flex flex-col justify-center gap-3 font-inclusiveSans rounded-xl shadow-lg border-4 border-primary/20">
           <p className="text-center">New bead:</p>
           <div

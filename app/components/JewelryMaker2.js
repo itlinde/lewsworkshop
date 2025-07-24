@@ -210,8 +210,8 @@ const JewelryMaker2 = () => {
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
       <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:p-6 absolute md:static top-[50vh]">
-        <div className="hidden md:block">
-          <Header />
+        <div className="hidden md:block mb-4">
+          <Header/>
         </div>
         <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
           <FilterBar filters={filters} setFilters={setFilters} />
@@ -251,7 +251,7 @@ const JewelryMaker2 = () => {
           <Header />
         </div>
         <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
-          <div className=" md:flex gap-3">
+          <div className="hidden md:flex gap-3">
             <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
               Keychain
             </button>
