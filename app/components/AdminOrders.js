@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const formatDate = (date) => {
   return date.split("T")[0];
@@ -18,6 +19,8 @@ const JoinOrdersCustomers = (customers, customerId) => {
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [ordersBeads, setOrdersBeads] = useState([]);
+  const [viewOrdersBeads, setViewOrdersBeads] = useState();
 
   // get orders
   useEffect(() => {
@@ -39,10 +42,20 @@ const AdminOrders = () => {
     run();
   }, []);
 
+  useEffect(() => {
+    const run = async () => {
+      const res = await fetch(`/api/orders/${viewOrdersBeads}/beads`, { method: "GET" });
+      const ordersBeads = await res.json();
+      setOrdersBeads(ordersBeads);
+    };
+    run();
+  }, [viewOrdersBeads]);
+
   return (
     <>
-      <div className="text-textDark font-inclusiveSans w-full max-w-screen-lg bg-background rounded-xl overflow-hidden">
-        <div className="bg-backgroundDark p-4 grid grid-cols-6 gap-4 font-medium border-b-[1.5px] border-textLight">
+    <div className="text-sm md:text-sm w-full flex flex-col-reverse max-w-screen-xl md:flex-row gap-6 justify-center">
+      <div className="text-textDark font-inclusiveSans max-w-screen-md shrink-0 bg-background rounded-xl overflow-hidden">
+        <div className="bg-backgroundDark p-3 grid grid-cols-6 gap-4 font-medium border-b-[1.5px] border-textLight">
           <div>Order ID</div>
           <div>Customer</div>
           <div>Total</div>
@@ -54,7 +67,7 @@ const AdminOrders = () => {
         {orders?.map((order) => (
           <div
             key={order.id}
-            className="p-4 grid grid-cols-6 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
+            className="p-3 grid grid-cols-6 gap-3 items-center border-b-[1.5px] border-primaryLight/50 hover:bg-primaryLight/10 transition duration-200"
           >
             <div className="break-words">{order.id}</div>
             <div className="break-words">{ order.customer_id ? JoinOrdersCustomers(customers, order.customer_id) : "-"}</div>
@@ -62,8 +75,10 @@ const AdminOrders = () => {
             <div className="break-words">{order.status}</div>
             <div className="break-words">{formatDate(order.date_ordered)}</div>
             <div className="break-words">
-              <button>
-                <p className="py-1 px-3 rounded-2xl border-textDark border-[1.5px]">
+              <button onClick={ () => {
+                setViewOrdersBeads(order.id);
+              }}>
+                <p className="py-1 px-2 rounded-xl border-textDark border-[1.5px] hover:bg-backgroundDark transition ease-in-out active:bg-textDark active:text-background active:transition-none">
                 View Beads
                 </p>
               </button>
@@ -71,6 +86,15 @@ const AdminOrders = () => {
           </div>
         ))}
       </div>
+      <div className="bg-backgroundDark flex-col w-full place-content-center md:max-w-96 h-96 md:h-screen rounded-xl border-[1.5px] sticky">
+        {ordersBeads?.map((bead) => (
+          // getting an error that there can't be duplicate keys when the same bead exists twice in an order
+          <div key={bead.beads.id}>
+            <Image src={bead.beads.image_path} width={300} height={300} style={{ height: `${bead.beads.diameter_mm * 5}px` }} alt="bead" className="place-self-center w-auto h-auto object-contain" />
+          </div>
+        ))}
+      </div>
+    </div>
     </>
   );
 };

@@ -6,7 +6,7 @@ import { createOrder } from "../../../lib/orderUtils";
 export async function GET(req) {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.from("orders").select();
+    const { data } = await supabase.from("orders").select().order('id', {ascending: true});
 
     return NextResponse.json(data);
   } catch (error) {
