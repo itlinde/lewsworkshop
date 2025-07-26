@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["jshsncliahkytfazcyfe.supabase.co", "waagstbitqshrscmxriq.supabase.co"],
+    domains: [
+      "khabgimuwkhexobpwhxs.supabase.co",
+      "waagstbitqshrscmxriq.supabase.co",
+    ],
   },
   async headers() {
     return [
@@ -13,7 +16,7 @@ const nextConfig = {
             value:
               process.env.NODE_ENV === "development"
                 ? "default-src * 'unsafe-inline' 'unsafe-eval'; img-src * data:;"
-                : "default-src 'self'; img-src 'self' https://jshsncliahkytfazcyfe.supabase.co data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com; frame-src 'self' https://checkout.stripe.com https://js.stripe.com;",
+                : "default-src 'self'; img-src 'self' https://waagstbitqshrscmxriq.supabase.co data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https://api.stripe.com; frame-src 'self' https://checkout.stripe.com https://js.stripe.com;",
           },
         ],
       },
