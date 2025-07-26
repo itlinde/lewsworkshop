@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
 import Header from "./Header";
+import lobsterClasp from "../../public/lobster-clasp.png";
 
 import {
   DndContext,
@@ -250,12 +251,19 @@ const JewelryMaker2 = () => {
           <Header />
         </div>
         <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
-          <div className="hidden md:flex gap-3">
+          <div className=" md:flex gap-3">
             <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
               Keychain
             </button>
-            {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Earrings</button>
-            <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
+            <div className="group flex-col relative">
+              <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
+              Earrings
+              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-0 -bottom-7 hidden group-hover:inline-block">
+                Coming soon!
+              </div>
+              </button>
+            </div>
+            {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
           </div>
           <div className="flex-col flex items-end z-10">
@@ -277,7 +285,7 @@ const JewelryMaker2 = () => {
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
               <TrashBin/>
-
+              <Image className="w-[90px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
