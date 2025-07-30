@@ -12,6 +12,7 @@ export async function GET(req, { params }) {
     // const { data } = await supabase.from("orders_beads").select('bead_id').eq('order_id', id);
     
     const { data } = await supabase.from("orders_beads").select(`
+      id,
       beads (
         id, image_path, diameter_mm, stock
       )

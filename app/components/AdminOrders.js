@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { v4 as uuidv4 } from "uuid";
 
 const formatDate = (date) => {
   return date.split("T")[0];
@@ -88,8 +89,7 @@ const AdminOrders = () => {
       </div>
       <div className="bg-backgroundDark flex-col w-full place-content-center md:max-w-96 h-96 md:h-screen rounded-xl border-[1.5px] sticky">
         {ordersBeads?.map((bead) => (
-          // getting an error that there can't be duplicate keys when the same bead exists twice in an order
-          <div key={bead.beads.id}>
+          <div key={bead.id}>
             <Image src={bead.beads.image_path} width={300} height={300} style={{ height: `${bead.beads.diameter_mm * 5}px` }} alt="bead" className="place-self-center w-auto h-auto object-contain" />
           </div>
         ))}
