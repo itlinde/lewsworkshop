@@ -14,7 +14,7 @@ export async function GET(req) {
     const { colour, size, shape } = query;
 
     // Start building the query
-    let queryBuilder = supabase.from("beads").select("*");
+    let queryBuilder = supabase.from("beads").select("*").order('id', {ascending: false});
 
     // Apply filters if they exist
     if (colour) queryBuilder = queryBuilder.eq("colour", colour);
