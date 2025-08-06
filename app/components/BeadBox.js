@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const BeadBox = ({ onClick, id, imagePath, price, diameter }) => {
+const BeadBox = ({ onClick, imagePath, price, diameter }) => {
   const scaledSize = diameter * 7;
 
   return (
