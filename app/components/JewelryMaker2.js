@@ -239,14 +239,8 @@ const JewelryMaker2 = () => {
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6">
-        <Image
-          className="-z-10 absolute top-0 left-0 object-none object-left-top max-h-full max-w-full"
-          priority
-          src={dotGrid}
-          alt=""
-          aria-hidden="true"
-        />
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6 bg-[url('/dot-grid.svg')] bg-repeat">
+
         <div className="md:hidden block p-2">
           <Header />
         </div>

@@ -6,7 +6,7 @@ export async function GET(req, { params }) {
   try {
     const supabase = await createClient();
 
-    const { id } = params;
+    const { id } = await params;
     
     // get - given an order ID > check orders_beads, get the bead IDs for that order
     // const { data } = await supabase.from("orders_beads").select('bead_id').eq('order_id', id);
