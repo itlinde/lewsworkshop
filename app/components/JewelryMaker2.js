@@ -239,14 +239,7 @@ const JewelryMaker2 = () => {
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6">
-        <Image
-          className="-z-10 absolute top-0 left-0 object-none object-left-top max-h-full max-w-full"
-          priority
-          src={dotGrid}
-          alt=""
-          aria-hidden="true"
-        />
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6 bg-[url('/dot-grid.svg')] bg-repeat">
         <div className="md:hidden block p-2">
           <Header />
         </div>
@@ -258,7 +251,7 @@ const JewelryMaker2 = () => {
             <div className="group flex-col relative">
               <button disabled className=" bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
               Earrings
-              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-1 -bottom-8 text-textDark/65 text-sm bg-backgroundDark p-1 rounded-md opacity-0 group-hover:opacity-100 transition ease-in-out duration-75">
+              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-1 -bottom-8 text-textDark/65 text-sm bg-backgroundDark p-1 rounded-md opacity-0 group-hover:opacity-100 transition ease-in-out duration-300 delay-500">
                 coming soon!
               </div>
               </button>
