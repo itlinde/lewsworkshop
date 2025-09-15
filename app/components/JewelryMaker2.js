@@ -271,6 +271,14 @@ const JewelryMaker2 = () => {
             >
               Order <span className="font-sans">→</span>
             </button>
+            <div>
+              <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
+                <p className="text-lg text-textDark">
+                  ${total.toFixed(2)}
+                </p>
+                <p className="text-base">{(length / 10).toFixed(1)} cm</p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">
@@ -322,18 +330,7 @@ const JewelryMaker2 = () => {
             </div>
           </div> */}
 
-          <div className="absolute bottom-0 w-full flex items-end justify-between md:mb-6">
-            <div>
-              <p className="text-sm md:text-base mb-2 text-textLight">
-                Total: ${total.toFixed(2)}
-              </p>
-              <div className="bg-backgroundDark/40 px-4 py-2 gap-3 inline-flex items-baseline rounded-2xl">
-                <p className="text-sm md:text-3xl">{(length / 10).toFixed(1)} cm</p>
-                <p className="text-sm text-textLight">
-                  {(length * 0.0393701).toFixed(2)} in
-                </p>
-              </div>
-            </div>
+          <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
               {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
                 <Image src={undoIcon} alt=""/> 
