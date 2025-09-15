@@ -61,7 +61,7 @@ const SortableItem = ({ item, activeBead }) => {
     opacity: activeBead?.dragId === item.dragId ? 0 : 1,
   };
 
-  const scaledSize = item.diameter * 7;
+  const scaledSize = item.diameter * 6;
 
   return (
     <div
@@ -77,7 +77,7 @@ const SortableItem = ({ item, activeBead }) => {
           src={item.imagePath}
           width={400}
           height={400}
-          style={{ height: `${scaledSize}px` }}
+          style={{ height: `${scaledSize}px` }} 
           alt="beeaadddd"
         />
       </div>
@@ -114,7 +114,7 @@ const JewelryMaker2 = () => {
   }, [filters]);
 
   const sensors = useSensors(
-    useSensor(MouseSensor),
+    useSensor(MouseSensor), 
     useSensor(TouchSensor, {
       activationConstraint: {
         delay: 200, // Requires hold for 200ms before dragging starts
@@ -215,38 +215,31 @@ const JewelryMaker2 = () => {
         </div>
         <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
           <FilterBar filters={filters} setFilters={setFilters} />
-          <button className="group flex gap-2 items-center text-textDark">
+          {/* <button className="group flex gap-2 items-center text-textDark">
             <p className="underline group-hover:no-underline">Recommended</p>
             <Image src={dropdownArrow} alt="" aria-hidden="true" />
-          </button>
+          </button> */}
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-0 mt-12 md:mt-0">
+          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-0 mt-12 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
-                <div key={item.id}>
-                  <BeadBox
-                    onClick={(e) => handleAddItem(item, e)}
-                    id={item.id}
-                    imagePath={item.image_path}
-                    price={item.price}
-                    diameter={item.diameter_mm}
-                  />
-                </div>
-              ))}
+              <div key={item.id}>
+                <BeadBox
+                  onClick={(e) => handleAddItem(item, e)}
+                  id={item.id}
+                  imagePath={item.image_path}
+                  price={item.price}
+                  diameter={item.diameter_mm}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6">
-        <Image
-          className="-z-10 absolute top-0 left-0 object-none object-left-top max-h-full max-w-full"
-          priority
-          src={dotGrid}
-          alt=""
-          aria-hidden="true"
-        />
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6 bg-[url('/dot-grid.svg')] bg-repeat">
         <div className="md:hidden block p-2">
           <Header />
         </div>
@@ -256,10 +249,10 @@ const JewelryMaker2 = () => {
               Keychain
             </button>
             <div className="group flex-col relative">
-              <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
+              <button disabled className=" bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
               Earrings
-              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-0 -bottom-7 hidden group-hover:inline-block">
-                Coming soon!
+              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-1 -bottom-8 text-textDark/65 text-sm bg-backgroundDark p-1 rounded-md opacity-0 group-hover:opacity-100 transition ease-in-out duration-300 delay-500">
+                coming soon!
               </div>
               </button>
             </div>
@@ -278,6 +271,14 @@ const JewelryMaker2 = () => {
             >
               Order <span className="font-sans">→</span>
             </button>
+            <div>
+              <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
+                <p className="text-lg text-textDark">
+                  ${total.toFixed(2)}
+                </p>
+                <p className="text-base">{(length / 10).toFixed(1)} cm</p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="grow h-[40vh] md:h-[97vh] relative">
@@ -285,7 +286,7 @@ const JewelryMaker2 = () => {
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
               <TrashBin/>
-              <Image className="w-[90px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
+              <Image className="w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
@@ -316,6 +317,7 @@ const JewelryMaker2 = () => {
               </DragOverlay>
             </DndContext>
           </div>
+
           {/* sandbox bead preview */}
           {/* <div className="absolute top-0 left-0 flex gap-3 p-3 items-center bg-backgroundDark/60 text-sm rounded-2xl">
             <p>(BEAD)</p>
@@ -327,18 +329,8 @@ const JewelryMaker2 = () => {
               <p className="text-textLight/40">#11520</p>
             </div>
           </div> */}
-          <div className="absolute bottom-0 w-full flex items-end justify-between md:mb-6">
-            <div>
-              <p className="text-sm md:text-base mb-2 text-textLight">
-                Total: ${total.toFixed(2)}
-              </p>
-              <div className="bg-backgroundDark/40 px-4 py-2 gap-3 inline-flex items-baseline rounded-2xl">
-                <p className="text-sm md:text-3xl">{length} mm</p>
-                <p className="text-sm text-textLight">
-                  {(length * 0.0393701).toFixed(2)} in
-                </p>
-              </div>
-            </div>
+
+          <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
               {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
                 <Image src={undoIcon} alt=""/> 

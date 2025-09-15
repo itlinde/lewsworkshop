@@ -7,7 +7,7 @@ const FilterBar = ({
       <select 
         id="colour"
         value={filters.colour}
-        className="bg-background border-textDark border-[1.5px] rounded-2xl px-1 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100"
+        className="bg-background border-textDark border-[1.5px] w-fit rounded-lg px-1.5 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100 appearance-none"
         onChange={(e) => setFilters((prev) => ({ ...prev, colour: e.target.value}))}
       >
         <option value="">All Colours</option>
@@ -25,13 +25,13 @@ const FilterBar = ({
         <option value="pearl">Pearl</option>
         <option value="mixed">Mixed</option>
       </select>
-      {/* <select
+      <select
         id="size"
         value={filters.size}
-        className="bg-background border-textDark border-[1.5px] rounded-2xl px-1 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100"
+        className="bg-background border-textDark border-[1.5px] w-fit rounded-lg px-1.5 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100 appearance-none"
         onChange={(e) => setFilters((prev) => ({ ...prev, size: e.target.value || "" }))}
       >
-        <option value="">Size</option>
+        <option value="">All Sizes</option>
         <option value="1">1 mm</option>
         <option value="2">2 mm</option>
         <option value="3">3 mm</option>
@@ -42,11 +42,11 @@ const FilterBar = ({
         <option value="8">8 mm</option>
         <option value="9">9 mm</option>
         <option value="10">10+ mm</option>
-      </select> */}
+      </select>
       <select 
         id="shape"
         value={filters.shape}
-        className="bg-background border-textDark border-[1.5px] rounded-2xl px-1 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100"
+        className="bg-background border-textDark border-[1.5px] rounded-lg px-1.5 py-1 hover:text-primaryDark hover:border-primaryDark transition ease-in-out duration-100 appearance-none"
         onChange={(e) => setFilters((prev) => ({ ...prev, shape: e.target.value || "" }))}
       >
         <option value="">All Shapes</option>
