@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { updateOrder } from "../../lib/orderUtils";
-
 
 const formatDate = (date) => {
   return date.split("T")[0];
@@ -27,15 +25,24 @@ const JoinOrdersCustomers = (customers, customerId) => {
 */
 
 // how to write patch req
-const updateOrderStatus = (orderId, status) => {
-  // create an obj
-  // updateOrder needs 
-  // send it to updateOrder
-  const orderData = { status };
+const updateOrderStatus = async (orderId, status) => {
+  try {
+    const orderData = { status };
   
-  console.log(orderId);
-  console.log(orderData);
-  updateOrder(orderId, orderData);
+    console.log(orderId);
+    console.log(orderData);
+    console.log(JSON.stringify(orderData));
+
+    await fetch(`/api/orders/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+  } catch (error) {
+    console.error("Error updating status:", error);
+  }
 }
 
 const AdminOrders = () => {
