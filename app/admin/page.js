@@ -23,7 +23,7 @@ export default function Home() {
         </h2>
         <div className="">
           <input
-            type="text"
+            type="password"
             id="password"
             name="password"
             placeholder="password"

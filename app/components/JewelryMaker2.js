@@ -5,9 +5,9 @@ import dotGrid from "../../public/dot-grid.svg";
 import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
 import undoIcon from "../../public/icons/undo-icon.svg";
 import redoIcon from "../../public/icons/redo-icon.svg";
-import xIcon from "../../public/icons/x-icon.svg";
-import redTrashIcon from "../../public/icons/trash-icon.svg";
-import darkTrashIcon from "../../public/icons/trash-icon-dark.svg";
+import XIcon from "../../public/icons/x-icon.svg";
+import TrashIcon from "../../public/icons/trash-icon.svg";
+import LengthIcon from "../../public/icons/length-icon.svg";
 import { useEffect, useState } from "react";
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
@@ -33,6 +33,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
 
+// old trash bin!! 
 const TrashBin = () => {
   const { setNodeRef, isOver } = useDroppable({ id: "delete-zone" });
 
@@ -44,8 +45,8 @@ const TrashBin = () => {
         ${isOver ? "bg-failRed/60 scale-110" : "bg-failRed/20 border-[1.5px] border-failRed"}
         transition-all duration-200`}
     >
-      <Image className={`w-5 h-5 ${isOver ? "hidden" : "block"} transition-all duration-200`} src={redTrashIcon} alt="Delete" width={40} height={40} />
-      <Image className={`w-5 h-5 ${isOver ? "block" : "hidden"} transition-all duration-200`} src={darkTrashIcon} alt="Delete" width={40} height={40} />
+      {/* <Image className={`w-5 h-5 ${isOver ? "hidden" : "block"} transition-all duration-200`} src={redTrashIcon} alt="Delete" width={40} height={40} />
+      <Image className={`w-5 h-5 ${isOver ? "block" : "hidden"} transition-all duration-200`} src={darkTrashIcon} alt="Delete" width={40} height={40} /> */}
     </div>
   );
 };
@@ -75,10 +76,11 @@ const SortableItem = ({ item, activeBead }) => {
         <Image
           className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
           src={item.imagePath}
-          width={400}
-          height={400}
+          width={50}
+          height={50}
           style={{ height: `${scaledSize}px` }} 
           alt="beeaadddd"
+          onClick={console.log(activeBead)}
         />
       </div>
     </div>
@@ -318,17 +320,7 @@ const JewelryMaker2 = () => {
             </DndContext>
           </div>
 
-          {/* sandbox bead preview */}
-          {/* <div className="absolute top-0 left-0 flex gap-3 p-3 items-center bg-backgroundDark/60 text-sm rounded-2xl">
-            <p>(BEAD)</p>
-            <div className="justify-items-end">
-              <div className="">
-                <p>$0.75</p>
-                <p>4 mm</p>
-              </div>
-              <p className="text-textLight/40">#11520</p>
-            </div>
-          </div> */}
+          <BeadMenu />
 
           <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
@@ -342,7 +334,7 @@ const JewelryMaker2 = () => {
                 onClick={() => setShowResetWarning(selectedBeads.length > 0 ? true : false)}
                 className={`p-2 rounded-xl transition ease-in-out duration-75 ${selectedBeads.length === 0 ? "cursor-not-allowed" : "hover:bg-failRed/60"}`}
               >
-                <Image src={xIcon} alt=""/>
+                <XIcon />
               </button>
             </div>
           </div>
@@ -382,6 +374,32 @@ const ResetModal = ({
           >
             Confirm
           </button>
+        </div>
+      </div>
+    </div>
+  )
+};
+
+const BeadMenu = () => {
+  return (
+    <div className="mt-44 absolute top-0 left-0 space-y-2">
+      <div className="grid grid-cols-3 auto-rows-auto gap-2 p-3 bg-backgroundDark/60 rounded-xl">
+        <div className="place-items-center">
+          <p className="text-base">$</p>
+          <LengthIcon />
+        </div>
+        <div className="items-center col-span-2">
+          <p className="text-base">0.75</p>
+          <p className="text-xs">4 mm</p>
+        </div>
+      </div>
+      <div>
+        <div
+          className={`group size-8 grid place-items-center rounded-lg active:scale-105
+            bg-failRed/25 border-[1.5px] border-failRed hover:bg-failRed/60 active:bg-failRed
+            transition-all duration-100`}
+        >
+          <TrashIcon className="size-4 text-failRed group-hover:text-textDark group-active:scale-105 transition-all duration-100" />
         </div>
       </div>
     </div>
