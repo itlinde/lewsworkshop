@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import dotGrid from "../../public/dot-grid.svg";
 import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
 import undoIcon from "../../public/icons/undo-icon.svg";
 import redoIcon from "../../public/icons/redo-icon.svg";
 import XIcon from "../../public/icons/x-icon.svg";
 import TrashIcon from "../../public/icons/trash-icon.svg";
 import LengthIcon from "../../public/icons/length-icon.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
 import Header from "./Header";
@@ -51,8 +50,29 @@ const TrashBin = () => {
   );
 };
 
+// custom hook so clicking out of menu closes it 
+function useClickOutside(onOutside, enabled = true) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const handlePointerDown = (e) => {
+    const el = ref.current;
+    if (el && !el.contains(e.target)) {
+    onOutside?.(e);
+    }
+  };
+
+  document.addEventListener("pointerdown", handlePointerDown);
+  return (() => document.removeEventListener("pointerdown", handlePointerDown));
+}, [onOutside, enabled]);
+
+return ref;
+}
+
 //make an item sortable
-const SortableItem = ({ item, activeBead }) => {
+const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.dragId });
 
@@ -64,26 +84,41 @@ const SortableItem = ({ item, activeBead }) => {
 
   const scaledSize = item.diameter * 6;
 
+  const isOpen = (showBeadMenu === item.dragId);
+  const containerRef = useClickOutside(() => setShowBeadMenu(null), isOpen);
+  // useEscapeKey(() => setShowBeadMenu(null), isOpen);
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="w-full flex justify-center items-center"
+      className="w-fit flex justify-center items-center"
     >
-      <div className="cursor-pointer">
-        <Image
-          className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
-          src={item.imagePath}
-          width={50}
-          height={50}
-          style={{ height: `${scaledSize}px` }} 
-          alt="beeaadddd"
-          onClick={console.log(activeBead)}
-        />
+      <div ref={containerRef} className="relative">
+          <div className="cursor-pointer">
+            <Image
+              className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
+              src={item.imagePath}
+              width={50}
+              height={50}
+              style={{ height: `${scaledSize}px` }} 
+              alt="Draggable bead"
+              onPointerUp={() => {
+                // show item menu on click / after a drag 
+                console.log("dragId: " + item.dragId);
+                setShowBeadMenu(prev => (prev === item.dragId ? null : item.dragId));
+                console.log("showBeadMenu: " + showBeadMenu);
+              }}
+            />
+          </div>
+          {isOpen && (
+            <BeadMenu beadId={item.dragId} diameter={item.diameter} price={item.price} 
+                      className=""/>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
@@ -103,6 +138,7 @@ const JewelryMaker2 = () => {
   const [filters, setFilters] = useState({ colour: "", size: "", shape: "" });
   const [activeBead, setActiveBead] = useState(null); // active bead = the bead being dragged
   const [showResetWarning, setShowResetWarning] = useState(false);
+  const [showBeadMenu, setShowBeadMenu] = useState(null);
 
   // fetch beads from db & put into an array
   useEffect(() => {
@@ -116,7 +152,11 @@ const JewelryMaker2 = () => {
   }, [filters]);
 
   const sensors = useSensors(
-    useSensor(MouseSensor), 
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    }), 
     useSensor(TouchSensor, {
       activationConstraint: {
         delay: 200, // Requires hold for 200ms before dragging starts
@@ -287,7 +327,7 @@ const JewelryMaker2 = () => {
           <div className="flex flex-col justify-center items-center h-full max-h-full p-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
-              <TrashBin/>
+              {/* <TrashBin/> */}
               <Image className="w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
@@ -297,8 +337,9 @@ const JewelryMaker2 = () => {
                   <SortableItem
                     key={item.dragId}
                     item={item}
-                    dragId={item.dragId}
                     activeBead={activeBead}
+                    showBeadMenu={showBeadMenu}
+                    setShowBeadMenu={setShowBeadMenu}
                   />
                 ))}
               </SortableContext>
@@ -307,7 +348,7 @@ const JewelryMaker2 = () => {
                 {activeBead ? (
                   <div className="w-full flex justify-center items-center pointer-events-none">
                     <Image
-                      className="w-auto h-auto object-cover place-self-center opacity-75"
+                      className="w-auto h-auto place-self-center opacity-75"
                       src={activeBead.imagePath}
                       width={400}
                       height={400}
@@ -319,8 +360,6 @@ const JewelryMaker2 = () => {
               </DragOverlay>
             </DndContext>
           </div>
-
-          <BeadMenu />
 
           <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
@@ -380,27 +419,26 @@ const ResetModal = ({
   )
 };
 
-const BeadMenu = () => {
+const BeadMenu = ({ diameter, price }) => {
   return (
-    <div className="mt-44 absolute top-0 left-0 space-y-2">
-      <div className="grid grid-cols-3 auto-rows-auto gap-2 p-3 bg-backgroundDark/60 rounded-xl">
+    <div className="absolute -right-24 top-1/2 -translate-y-1/2 space-y-1">
+      <div className="cursor-default grid grid-cols-3 auto-rows-auto gap-2 p-3 bg-backgroundDark/60 rounded-xl">
         <div className="place-items-center">
           <p className="text-base">$</p>
           <LengthIcon />
         </div>
         <div className="items-center col-span-2">
-          <p className="text-base">0.75</p>
-          <p className="text-xs">4 mm</p>
+          <p className="text-base">{(price / 100).toFixed(2) ?? '0.00'}</p>
+          <p className="text-xs">{diameter ?? '0'} mm</p>
         </div>
       </div>
       <div>
-        <div
-          className={`group size-8 grid place-items-center rounded-lg active:scale-105
+        <button className={`group size-8 grid place-items-center rounded-lg active:scale-105
             bg-failRed/25 border-[1.5px] border-failRed hover:bg-failRed/60 active:bg-failRed
             transition-all duration-100`}
-        >
+            onClick={() => {console.log("TRASH CLICKEDDD")}}>
           <TrashIcon className="size-4 text-failRed group-hover:text-textDark group-active:scale-105 transition-all duration-100" />
-        </div>
+        </button>
       </div>
     </div>
   )
