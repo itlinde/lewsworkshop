@@ -2,16 +2,14 @@
 
 import Image from "next/image";
 import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
-import undoIcon from "../../public/icons/undo-icon.svg";
-import redoIcon from "../../public/icons/redo-icon.svg";
 import XIcon from "../../public/icons/x-icon.svg";
-import TrashIcon from "../../public/icons/trash-icon.svg";
-import LengthIcon from "../../public/icons/length-icon.svg";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
 import Header from "./Header";
 import lobsterClasp from "../../public/lobster-clasp.png";
+import BeadMenu from "./BeadMenu";
+import useClickOutside from "../../hooks/useClickOutside";
 
 import {
   DndContext,
@@ -32,47 +30,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
 
-// old trash bin!! 
-const TrashBin = () => {
-  const { setNodeRef, isOver } = useDroppable({ id: "delete-zone" });
-
-  return (
-    <div
-      style={{ width: '64px', height: '64px' }}
-      ref={setNodeRef}
-      className={`z-50 absolute bottom-16 right-0 w-16 h-16 flex items-center justify-center rounded-2xl 
-        ${isOver ? "bg-failRed/60 scale-110" : "bg-failRed/20 border-[1.5px] border-failRed"}
-        transition-all duration-200`}
-    >
-      {/* <Image className={`w-5 h-5 ${isOver ? "hidden" : "block"} transition-all duration-200`} src={redTrashIcon} alt="Delete" width={40} height={40} />
-      <Image className={`w-5 h-5 ${isOver ? "block" : "hidden"} transition-all duration-200`} src={darkTrashIcon} alt="Delete" width={40} height={40} /> */}
-    </div>
-  );
-};
-
-// custom hook so clicking out of menu closes it 
-function useClickOutside(onOutside, enabled = true) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const handlePointerDown = (e) => {
-    const el = ref.current;
-    if (el && !el.contains(e.target)) {
-    onOutside?.(e);
-    }
-  };
-
-  document.addEventListener("pointerdown", handlePointerDown);
-  return (() => document.removeEventListener("pointerdown", handlePointerDown));
-}, [onOutside, enabled]);
-
-return ref;
-}
-
 //make an item sortable
-const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu }) => {
+const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu, onMenuClick }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.dragId });
 
@@ -86,7 +45,6 @@ const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu }) => {
 
   const isOpen = (showBeadMenu === item.dragId);
   const containerRef = useClickOutside(() => setShowBeadMenu(null), isOpen);
-  // useEscapeKey(() => setShowBeadMenu(null), isOpen);
 
   return (
     <div
@@ -115,7 +73,7 @@ const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu }) => {
           </div>
           {isOpen && (
             <BeadMenu beadId={item.dragId} diameter={item.diameter} price={item.price} 
-                      className=""/>
+                      onMenuClick={onMenuClick}/>
           )}
         </div>
       </div>
@@ -180,22 +138,6 @@ const JewelryMaker2 = () => {
 
     if (!over) return;
 
-    // If dropped in trash bin, delete the bead
-    if (over.id === "delete-zone") {
-      setSelectedBeads((prev) => prev.filter((item) => item.dragId !== active.id));
-
-      // Update totals
-      setTotal(() => {
-        if (selectedBeads.length == 1) {
-          return 0;
-        } else {
-          return (totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) / 100) + 5;
-        }
-      });
-      setLength(totalLength(selectedBeads.filter((item) => item.dragId !== active.id)));
-      return;
-    }
-
     if (active.id !== over.id) {
       setSelectedBeads((items) => {
         const oldIndex = items.findIndex((item) => item.dragId === active.id);
@@ -248,10 +190,25 @@ const JewelryMaker2 = () => {
     setShowResetWarning(false);
   }
 
+  const handleDeleteItem = (item) => {
+    setSelectedBeads((prev) => prev.filter((bead) => bead.dragId !== item.dragId));
+
+    // Update totals
+    setTotal(() => {
+      if (selectedBeads.length == 1) {
+        return 0;
+      } else {
+        return (totalSum(selectedBeads.filter((bead) => bead.dragId !== item.dragId)) / 100) + 5;
+      }
+    });
+    setLength(totalLength(selectedBeads.filter((bead) => bead.dragId !== item.dragId)));
+    return;
+  };
+
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:p-6 absolute md:static top-[50vh]">
+      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
         <div className="hidden md:block">
           <Header />
         </div>
@@ -263,7 +220,7 @@ const JewelryMaker2 = () => {
           </button> */}
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-0 mt-12 md:mt-0">
+          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-6 mt-12 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
               <div key={item.id}>
@@ -298,6 +255,7 @@ const JewelryMaker2 = () => {
               </div>
               </button>
             </div>
+            {/* buttons for other jewelry types */}
             {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
             <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
           </div>
@@ -327,7 +285,6 @@ const JewelryMaker2 = () => {
           <div className="flex flex-col justify-center items-center h-full max-h-full p-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
-              {/* <TrashBin/> */}
               <Image className="w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
@@ -340,6 +297,10 @@ const JewelryMaker2 = () => {
                     activeBead={activeBead}
                     showBeadMenu={showBeadMenu}
                     setShowBeadMenu={setShowBeadMenu}
+                    onMenuClick={() => {
+                                  console.log("TRASH CLICKEDDD, id: " + item.dragId);
+                                  handleDeleteItem(item);
+                                }}
                   />
                 ))}
               </SortableContext>
@@ -361,8 +322,9 @@ const JewelryMaker2 = () => {
             </DndContext>
           </div>
 
-          <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
+          <div className="absolute bottom-0 w-full flex items-end justify-end">
             <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
+            {/* undo/redo icons for later */}
               {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
                 <Image src={undoIcon} alt=""/> 
               </button>
@@ -414,31 +376,6 @@ const ResetModal = ({
             Confirm
           </button>
         </div>
-      </div>
-    </div>
-  )
-};
-
-const BeadMenu = ({ diameter, price }) => {
-  return (
-    <div className="absolute -right-24 top-1/2 -translate-y-1/2 space-y-1">
-      <div className="cursor-default grid grid-cols-3 auto-rows-auto gap-2 p-3 bg-backgroundDark/60 rounded-xl">
-        <div className="place-items-center">
-          <p className="text-base">$</p>
-          <LengthIcon />
-        </div>
-        <div className="items-center col-span-2">
-          <p className="text-base">{(price / 100).toFixed(2) ?? '0.00'}</p>
-          <p className="text-xs">{diameter ?? '0'} mm</p>
-        </div>
-      </div>
-      <div>
-        <button className={`group size-8 grid place-items-center rounded-lg active:scale-105
-            bg-failRed/25 border-[1.5px] border-failRed hover:bg-failRed/60 active:bg-failRed
-            transition-all duration-100`}
-            onClick={() => {console.log("TRASH CLICKEDDD")}}>
-          <TrashIcon className="size-4 text-failRed group-hover:text-textDark group-active:scale-105 transition-all duration-100" />
-        </button>
       </div>
     </div>
   )
