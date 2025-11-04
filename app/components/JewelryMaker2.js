@@ -193,7 +193,6 @@ const JewelryMaker2 = () => {
       }),
     });
     const data = await res.json();
-    console.log("data", data);
     if (data.redirectUrl) {
       window.location.href = data.redirectUrl;
     }

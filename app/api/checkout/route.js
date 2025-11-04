@@ -10,8 +10,6 @@ export async function POST(req) {
     const body = await req.json();
     const price = body.price;
 
-    console.log('body', body)
-
     if (price < 100) {
       return NextResponse.json(
         { error: "Price must be >= 1.00 CAD" },
