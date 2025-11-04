@@ -10,6 +10,7 @@ import Header from "./Header";
 import lobsterClasp from "../../public/lobster-clasp.png";
 import BeadMenu from "./BeadMenu";
 import useClickOutside from "../../hooks/useClickOutside";
+import JewelryTypes from "./JewelryTypes";
 
 import {
   DndContext,
@@ -208,7 +209,7 @@ const JewelryMaker2 = () => {
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
+      <section className="flex flex-col bg-background md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
         <div className="hidden md:block">
           <Header />
         </div>
@@ -218,9 +219,12 @@ const JewelryMaker2 = () => {
             <p className="underline group-hover:no-underline">Recommended</p>
             <Image src={dropdownArrow} alt="" aria-hidden="true" />
           </button> */}
+          <div className="md:hidden">
+            <JewelryTypes />
+          </div>
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-6 mt-12 md:mt-0">
+          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-6 mt-14 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
               <div key={item.id}>
@@ -243,41 +247,27 @@ const JewelryMaker2 = () => {
           <Header />
         </div>
         <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
-          <div className=" md:flex gap-3">
-            <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
-              Keychain
-            </button>
-            <div className="group flex-col relative">
-              <button disabled className=" bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
-              Earrings
-              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-1 -bottom-8 text-textDark/65 text-sm bg-backgroundDark p-1 rounded-md opacity-0 group-hover:opacity-100 transition ease-in-out duration-300 delay-500">
-                coming soon!
-              </div>
-              </button>
-            </div>
-            {/* buttons for other jewelry types */}
-            {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
-            <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
+          <div className="hidden md:block">
+            <JewelryTypes />
           </div>
-          <div className="flex-col flex items-end z-10">
+          <div className="flex flex-row-reverse justify-between w-full md:flex-col items-end z-10">
             <button
               onClick={handleOrderSubmit}
-              className={`px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
+              className={`flex gap-2 px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
                 selectedBeads.length === 0
                   ? "bg-backgroundDark cursor-not-allowed"
                   : "bg-secondary hover:bg-secondaryLight cursor-pointer"
               }`}
               disabled={selectedBeads.length === 0}
             >
-              Order <span className="font-sans">→</span>
+              <p className="hidden md:block">Order</p>
+              <span className="font-sans">→</span>
             </button>
-            <div>
-              <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
-                <p className="text-lg text-textDark">
-                  ${total.toFixed(2)}
-                </p>
-                <p className="text-base">{(length / 10).toFixed(1)} cm</p>
-              </div>
+            <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
+              <p className="text-lg/6 text-textDark">
+                ${total.toFixed(2)}
+              </p>
+              <p className="text-base">{(length / 10).toFixed(1)} cm</p>
             </div>
           </div>
         </div>
