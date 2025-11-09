@@ -14,7 +14,7 @@ const JewelryTypes = () => {
 
       <button className="flex md:hidden items-center gap-2 h-fit bg-[#FDF8F3] px-3 py-2 rounded-xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
         <p>Keychain</p>
-        <DropdownArrow className=""/>
+        <DropdownArrow />
       </button>
 
       {/* Desktop and Tablet View */}

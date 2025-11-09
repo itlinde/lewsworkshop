@@ -210,7 +210,7 @@ const JewelryMaker2 = () => {
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
       <section className="flex flex-col bg-background md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
-        <div className="hidden md:block">
+        <div className="hidden md:block md:mb-6 md:mt-3">
           <Header />
         </div>
         <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
