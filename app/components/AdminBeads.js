@@ -198,7 +198,14 @@ const AdminBeads = () => {
               className="p-4 grid grid-cols-8 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
             >
               <div className="break-words">{bead.id}</div>
-              <Image src={bead.image_path} width={300} height={300} style={{ height: `${bead.diameter_mm * 8}px` }} alt="bead" className="w-auto h-auto object-contain" />
+              <Image
+                src={bead.image_path}
+                width={300}
+                height={300}
+                style={{ height: `${bead.diameter_mm * 8}px` }}
+                alt="bead"
+                className="w-auto h-auto object-contain"
+              />
               <div className="break-words">{bead.name}</div>
               <div className="break-words">{bead.diameter_mm}</div>
               <div className="break-words">{bead.price}</div>
