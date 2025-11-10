@@ -5,7 +5,7 @@ const BeadBox = ({ onClick, imagePath, price, diameter }) => {
   const scaledSize = diameter * 6;
 
   return (
-    <button onClick={onClick} className="group relative grid size-[118px] md:size-36 border-backgroundDark border-[1.5px] place-content-center rounded-xl text-center">
+    <button onClick={onClick} className="group relative grid size-28 md:size-36 border-backgroundDark border-[1.5px] place-content-center rounded-xl text-center">
         <Image
           className="object-contain group-hover:scale-110 transition ease-in-out duration-200"
           src={imagePath}

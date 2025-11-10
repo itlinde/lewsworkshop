@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
-import XIcon from "../../public/icons/x-icon.svg";
 import { useEffect, useState } from "react";
+
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
 import Header from "./Header";
-import lobsterClasp from "../../public/lobster-clasp.png";
 import BeadMenu from "./BeadMenu";
 import useClickOutside from "../../hooks/useClickOutside";
 import JewelryTypes from "./JewelryTypes";
+
+import XIcon from "../../public/icons/x-icon.svg";
+import DropdownArrow from "../../public/icons/dropdown-arrow.svg";
+import lobsterClasp from "../../public/lobster-clasp.png";
+
 
 import {
   DndContext,
@@ -21,6 +24,7 @@ import {
   useDroppable,
   DragOverlay,
 } from "@dnd-kit/core";
+
 import {
   arrayMove,
   SortableContext,
@@ -98,6 +102,7 @@ const JewelryMaker2 = () => {
   const [activeBead, setActiveBead] = useState(null); // active bead = the bead being dragged
   const [showResetWarning, setShowResetWarning] = useState(false);
   const [showBeadMenu, setShowBeadMenu] = useState(null);
+  const [showTypeModal, setShowTypeModal] = useState(false);
 
   // fetch beads from db & put into an array
   useEffect(() => {
@@ -209,25 +214,29 @@ const JewelryMaker2 = () => {
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
+      <section className="fixed flex flex-col bg-background w-fit place-self-center md:place-self-auto md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 md:static top-[50vh]">
         <div className="hidden md:block md:mb-5 md:mt-3">
           <Header />
         </div>
-        <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
-          <FilterBar filters={filters} setFilters={setFilters} />
-          {/* <button className="group flex gap-2 items-center text-textDark">
-            <p className="underline group-hover:no-underline">Recommended</p>
-            <Image src={dropdownArrow} alt="" aria-hidden="true" />
-          </button> */}
-          <div className="md:hidden">
-            <JewelryTypes />
+        <div className="w-full md:pr-0 md:static flex items-center justify-end md:justify-between text-sm my-2 md:mb-4 text-textDark">
+          <div className="hidden md:block">
+            <FilterBar filters={filters} setFilters={setFilters} />
+            {/* <button className="group flex gap-2 items-center text-textDark">
+              <p className="underline group-hover:no-underline">Recommended</p>
+              <Image src={dropdownArrow} alt="" aria-hidden="true" />
+            </button> */}
           </div>
+          <button className="flex md:hidden items-center gap-2 h-fit bg-[#FDF8F3] px-3 py-2 rounded-xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75"
+                  onClick={() => setShowTypeModal(true)}>
+            <p>Keychain</p>
+            <DropdownArrow />
+          </button>
         </div>
-        <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 mt-14 md:mt-0">
+        <div className="grow grid w-full h-[50vh] md:static">
+          <div className="grid place-self-center w-fit grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
-              <div key={item.id}>
+              <div key={item.id} className="grid place-self-center">
                 <BeadBox
                   onClick={(e) => handleAddItem(item, e)}
                   id={item.id}
@@ -337,6 +346,11 @@ const JewelryMaker2 = () => {
           onConfirm={handleReset}
         />
       )}
+      {showTypeModal && (
+        <TypeModal 
+          onReturn={() => {setShowTypeModal(false)}}
+        />
+      )}
     </div>
   );
 };
@@ -367,6 +381,22 @@ const ResetModal = ({
           </button>
         </div>
       </div>
+    </div>
+  )
+};
+
+const TypeModal = ({
+  onReturn,
+}) => {
+  return(
+    <div className="fixed inset-0 flex flex-col items-center justify-center backdrop-blur-lg bg-opacity-30 bg-background z-50 space-y-6">
+      <div className="w-56 text-center space-y-3">
+        <h2 className="font-darumadrop text-2xl">Jewelry Type</h2>
+        <p className="text-base/5">Create a new type of jewelry! <br/> Selecting a new type will reset all progress. </p>
+      </div>
+      <JewelryTypes />
+      <p className="underline text-textLight"
+          onClick={onReturn}>Return to Maker</p>
     </div>
   )
 };
