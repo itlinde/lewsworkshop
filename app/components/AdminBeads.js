@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { protectedFetch } from "../../lib/protectedFetch";
 
 const AdminBeads = () => {
   const [beads, setBeads] = useState([]);
@@ -47,7 +48,7 @@ const AdminBeads = () => {
       setStock("");
       setPrice("");
 
-      await fetch("/api/beads", {
+      protectedFetch("/api/beads", {
         method: "POST",
         body: JSON.stringify(beadData),
       });
