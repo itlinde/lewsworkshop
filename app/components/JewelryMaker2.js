@@ -58,14 +58,14 @@ const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu, onMenuC
       <div ref={containerRef} className="relative">
           <div className="cursor-pointer">
             <Image
-              className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
+              className="m-1 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-110 transition ease-in-out"
               src={item.imagePath}
               width={50}
               height={50}
               style={{ height: `${scaledSize}px` }} 
               alt="Draggable bead"
               onPointerUp={() => {
-                // show item menu on click / after a drag 
+                // show item menu on click and after a drag 
                 console.log("dragId: " + item.dragId);
                 setShowBeadMenu(prev => (prev === item.dragId ? null : item.dragId));
                 console.log("showBeadMenu: " + showBeadMenu);
@@ -210,7 +210,7 @@ const JewelryMaker2 = () => {
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
       <section className="flex flex-col bg-background md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 absolute md:static top-[50vh]">
-        <div className="hidden md:block md:mb-6 md:mt-3">
+        <div className="hidden md:block md:mb-5 md:mt-3">
           <Header />
         </div>
         <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
@@ -224,7 +224,7 @@ const JewelryMaker2 = () => {
           </div>
         </div>
         <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-6 mt-14 md:mt-0">
+          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 mt-14 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
               <div key={item.id}>
@@ -242,15 +242,15 @@ const JewelryMaker2 = () => {
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6 bg-[url('/dot-grid.svg')] bg-repeat">
-        <div className="md:hidden block p-2">
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow h-[50vh] md:h-[100vh] flex flex-col bg-[url('/dot-grid.svg')] bg-repeat [-webkit-touch-callout:none] [-webkit-user-drag:none] [ -webkit-user-select:none ] select-none ">
+        <div className="absolute md:hidden block p-2">
           <Header />
         </div>
-        <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
+        <div className="absolute h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
           <div className="hidden md:block">
             <JewelryTypes />
           </div>
-          <div className="flex flex-row-reverse justify-between w-full md:flex-col items-end z-10">
+          <div className="flex flex-row-reverse justify-between w-full md:flex-col items-end z-10 user-select-none">
             <button
               onClick={handleOrderSubmit}
               className={`flex gap-2 px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
@@ -263,19 +263,19 @@ const JewelryMaker2 = () => {
               <p className="hidden md:block">Order</p>
               <span className="font-sans">→</span>
             </button>
-            <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
-              <p className="text-lg/6 text-textDark">
+            <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline text-left md:text-right rounded-xl">
+              <p className="text-base/tight text-textDark">
                 ${total.toFixed(2)}
               </p>
-              <p className="text-base">{(length / 10).toFixed(1)} cm</p>
+              <p className="text-sm">{(length / 10).toFixed(1)} cm</p>
             </div>
           </div>
         </div>
-        <div className="grow h-[40vh] md:h-[97vh] relative">
-          <div className="flex flex-col justify-center items-center h-full max-h-full p-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="z-10 grow h-[40vh] md:h-[97vh] w-fit relative place-self-center">
+          <div className="flex flex-col justify-center items-center w-fit h-full max-h-full overflow-y-scroll px-32 -mx-32 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
-              <Image className="w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
+              <Image className="w-[60px] md:w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
@@ -299,7 +299,7 @@ const JewelryMaker2 = () => {
                 {activeBead ? (
                   <div className="w-full flex justify-center items-center pointer-events-none">
                     <Image
-                      className="w-auto h-auto place-self-center opacity-75"
+                      className="h-auto place-self-center opacity-75"
                       src={activeBead.imagePath}
                       width={400}
                       height={400}
@@ -311,23 +311,23 @@ const JewelryMaker2 = () => {
               </DragOverlay>
             </DndContext>
           </div>
+        </div>
 
-          <div className="absolute bottom-0 w-full flex items-end justify-end">
-            <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
-            {/* undo/redo icons for later */}
-              {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
-                <Image src={undoIcon} alt=""/> 
-              </button>
-              <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
-                <Image src={redoIcon} alt=""/> 
-              </button> */}
-              <button 
-                onClick={() => setShowResetWarning(selectedBeads.length > 0 ? true : false)}
-                className={`p-2 rounded-xl transition ease-in-out duration-75 ${selectedBeads.length === 0 ? "cursor-not-allowed" : "hover:bg-failRed/60"}`}
-              >
-                <XIcon />
-              </button>
-            </div>
+        <div className="absolute bottom-0 right-0 p-6 flex items-end justify-end">
+          <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
+          {/* undo/redo icons for later */}
+            {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
+              <Image src={undoIcon} alt=""/> 
+            </button>
+            <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
+              <Image src={redoIcon} alt=""/> 
+            </button> */}
+            <button 
+              onClick={() => setShowResetWarning(selectedBeads.length > 0 ? true : false)}
+              className={`p-2 rounded-xl transition ease-in-out duration-75 ${selectedBeads.length === 0 ? "cursor-not-allowed" : "hover:bg-failRed/60"}`}
+            >
+              <XIcon />
+            </button>
           </div>
         </div>
       </section>
