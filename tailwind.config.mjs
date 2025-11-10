@@ -15,7 +15,7 @@ export default {
         primaryDark: "#789DBC",
         secondary: "#CBDDED",
         secondaryLight: "#DEEEFC",
-        textDark: "#424242",
+        textDark: "#535353",
         textLight: "#7A736B",
         accent: "#edc0cb",
         successGreen: "#C8DA95",

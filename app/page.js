@@ -7,11 +7,7 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <>
-      <div className="w-screen h-screen flex flex-col justify-center items-center md:hidden text-textDark">
-        <p className="">Please use our website on a tablet or laptop! </p>
-        <p className="italic text-textLight">(Mobile page coming soon)</p>
-      </div>
-      <div className="hidden md:block">
+      <div className="block">
         <JewelryMaker2 />
       </div>
     </>
