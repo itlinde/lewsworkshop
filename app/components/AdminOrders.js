@@ -84,12 +84,6 @@ const AdminOrders = () => {
   return (
     <>
     <div className="text-sm md:text-sm w-full flex flex-col-reverse max-w-screen-xl md:flex-row gap-6 justify-center">
-      <div>
-      <button className="border-2 block text-sm/6 text-left hover:bg-backgroundDark w-full px-4 active:bg-textLight active:text-background">
-        TEST
-      </button>
-      </div>
-      
       <div className="text-textDark font-inclusiveSans max-w-screen-md shrink-0 bg-background rounded-xl overflow-hidden">
         <div className="bg-backgroundDark p-3 grid grid-cols-6 gap-4 font-medium border-b-[1.5px] border-textLight">
           <div>Order ID</div>
@@ -165,10 +159,11 @@ function StatusStyling({status, onClick, openStatusMenu, orderId}) {
             <svg className="inline size-0 pl-1 group-hover:size-fit" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.5 1L5 5L0.5 1" stroke="currentColor" strokeWidth="1.5"/>
             </svg>
-          </div>
-          { openStatusMenu && (
+          </div> 
+          {/* status change dropdown isn't done yet .: commented out */}
+          {/* { openStatusMenu && (
             <StatusDropDown orderId={orderId}/>
-          )}
+          )} */}
         </div>
         ) 
     case 'pending':
