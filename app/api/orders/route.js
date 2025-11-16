@@ -1,6 +1,6 @@
 import { createClient } from "../../../utils/supabase/server";
 import { NextResponse } from "next/server";
-import { createOrder } from "../../../lib/orderUtils";
+import { createDraftOrder } from "../../../lib/orderUtils";
 
 // fetch all order data
 export async function GET(req) {
@@ -17,7 +17,7 @@ export async function GET(req) {
 export async function POST(req) {
   const body = await req.json();
 
-  const orderRes = await createOrder(body);
+  const orderRes = await createDraftOrder(body);
 
   if (orderRes.ok) {
     return NextResponse.json(orderRes.orderData);

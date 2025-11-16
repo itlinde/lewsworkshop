@@ -3478,9 +3478,4 @@
 <circle cx="936" cy="1020" r="0.8" fill="#7A736B" fill-opacity="0.5"/>
 <circle cx="953" cy="1020" r="0.8" fill="#7A736B" fill-opacity="0.5"/>
 </g>
-<defs>
-<clipPath id="clip0_2141_1536">
-<rect width="1000" height="1024" fill="white" transform="translate(0 -1)"/>
-</clipPath>
-</defs>
 </svg>

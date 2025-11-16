@@ -8,13 +8,14 @@ const AdminNav = () => {
 
   return (
     <>
-      <Header />
-      <main className="flex flex-col items-center max-w-screen-xl mx-auto p-8">
-        <nav className="w-full mb-8">
-          <ul className="flex justify-center space-x-6">
+    <div className="p-6">
+      <Header/>
+      <main className="font-inclusiveSans flex flex-col items-center max-w-screen-xl mx-auto px-4">
+        <nav className="w-full pt-2 pb-4 border-b-[1.5px] mb-4">
+          <ul className="flex space-x-2">
             <li>
               <button
-                className="px-6 py-2 text-primary bg-primaryLight rounded-lg hover:bg-primary hover:text-background transition duration-200"
+                className={`px-5 py-1.5 ${ !ordersScreen ? "text-textDark" : "bg-secondary/50 text-primary" } rounded-md hover:bg-primary hover:text-background transition duration-200`}
                 onClick={() => {
                   setOrdersScreen(true);
                   setBeadsScreen(false);
@@ -25,7 +26,7 @@ const AdminNav = () => {
             </li>
             <li>
               <button
-                className="px-6 py-2 text-primary bg-primaryLight rounded-lg hover:bg-primary hover:text-background transition duration-200"
+                className={`px-5 py-1.5 ${ ordersScreen ? "text-textDark" : "bg-secondary/50 text-primary" } rounded-md hover:bg-primary hover:text-background transition duration-200`}
                 onClick={() => {
                   setOrdersScreen(false);
                   setBeadsScreen(true);
@@ -39,6 +40,7 @@ const AdminNav = () => {
         {ordersScreen && <AdminOrders />}
         {beadsScreen && !ordersScreen && <AdminBeads />}
       </main>
+    </div>
     </>
   );
 };
