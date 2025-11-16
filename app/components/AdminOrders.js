@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import { protectedFetch } from "../../lib/protectedFetch";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const run = async () => {
-      const res = await fetch("/api/orders", { method: "GET" });
-      const orders = await res.json();
+      const orders = await protectedFetch("/api/orders", { method: "GET" });
       setOrders(orders);
     };
     run();

@@ -6,7 +6,7 @@ import { parse } from "url";
 // fetch beads
 export async function GET(req) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     // const { data } = await supabase.from("beads").select();
 
     // Extract query parameters (e.g., ?color=red&size=6&shape=round)
@@ -36,7 +36,7 @@ export async function POST(req) {
     // make body of post request
     const body = await req.json();
 
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const dataUrl = body.imageFileDataUrl;
     const fileType = body.imageFileType;
