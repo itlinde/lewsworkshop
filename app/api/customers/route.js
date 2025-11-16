@@ -1,10 +1,11 @@
 import { createClient } from "../../../utils/supabase/server";
+import { createCustomer } from "../../../lib/customerUtils";
 import { NextResponse } from "next/server";
 
 // fetch all order data
 export async function GET(req) {
   try {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { data } = await supabase.from("customers").select();
 
     return NextResponse.json(data);
