@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { verifyPassword } from "../../lib/verifyPassword";
 import AdminNav from "../components/AdminNav";
 
 import Image from "next/image";
@@ -10,10 +11,14 @@ export default function Home() {
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
-    if (password === "lewlery") {
-      setEntered(true);
-    }
-  }, [password]);
+    const checkPassword = async () => {
+      const isValid = await verifyPassword(password);
+      if (isValid) {
+        setEntered(true);
+      }
+    };
+    checkPassword();
+  }, [password, verifyPassword]);
 
   return !entered ? (
     <div className="">

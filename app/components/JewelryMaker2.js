@@ -1,18 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import dotGrid from "../../public/dot-grid.svg";
-import dropdownArrow from "../../public/icons/dropdown-arrow.svg";
-import undoIcon from "../../public/icons/undo-icon.svg";
-import redoIcon from "../../public/icons/redo-icon.svg";
-import xIcon from "../../public/icons/x-icon.svg";
-import redTrashIcon from "../../public/icons/trash-icon.svg";
-import darkTrashIcon from "../../public/icons/trash-icon-dark.svg";
 import { useEffect, useState } from "react";
+
 import BeadBox from "./BeadBox";
 import FilterBar from "./FilterBar";
 import Header from "./Header";
+import BeadMenu from "./BeadMenu";
+import useClickOutside from "../../hooks/useClickOutside";
+import JewelryTypes from "./JewelryTypes";
+
+import XIcon from "../../public/icons/x-icon.svg";
+import DropdownArrow from "../../public/icons/dropdown-arrow.svg";
 import lobsterClasp from "../../public/lobster-clasp.png";
+
 
 import {
   DndContext,
@@ -23,6 +24,7 @@ import {
   useDroppable,
   DragOverlay,
 } from "@dnd-kit/core";
+
 import {
   arrayMove,
   SortableContext,
@@ -33,25 +35,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuidv4 } from "uuid";
 
-const TrashBin = () => {
-  const { setNodeRef, isOver } = useDroppable({ id: "delete-zone" });
-
-  return (
-    <div
-      style={{ width: '64px', height: '64px' }}
-      ref={setNodeRef}
-      className={`z-50 absolute bottom-16 right-0 w-16 h-16 flex items-center justify-center rounded-2xl 
-        ${isOver ? "bg-failRed/60 scale-110" : "bg-failRed/20 border-[1.5px] border-failRed"}
-        transition-all duration-200`}
-    >
-      <Image className={`w-5 h-5 ${isOver ? "hidden" : "block"} transition-all duration-200`} src={redTrashIcon} alt="Delete" width={40} height={40} />
-      <Image className={`w-5 h-5 ${isOver ? "block" : "hidden"} transition-all duration-200`} src={darkTrashIcon} alt="Delete" width={40} height={40} />
-    </div>
-  );
-};
-
 //make an item sortable
-const SortableItem = ({ item, activeBead }) => {
+const SortableItem = ({ item, activeBead, showBeadMenu, setShowBeadMenu, onMenuClick }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.dragId });
 
@@ -63,25 +48,40 @@ const SortableItem = ({ item, activeBead }) => {
 
   const scaledSize = item.diameter * 6;
 
+  const isOpen = (showBeadMenu === item.dragId);
+  const containerRef = useClickOutside(() => setShowBeadMenu(null), isOpen);
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="w-full flex justify-center items-center"
+      className="w-fit flex justify-center items-center"
     >
-      <div className="cursor-pointer">
-        <Image
-          className="m-0.5 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-105 transition ease-in-out"
-          src={item.imagePath}
-          width={400}
-          height={400}
-          style={{ height: `${scaledSize}px` }} 
-          alt="beeaadddd"
-        />
+      <div ref={containerRef} className="relative">
+          <div className="cursor-pointer">
+            <Image
+              className="m-1 w-auto h-auto object-cover place-self-center hover:opacity-80 hover:scale-110 transition ease-in-out"
+              src={item.imagePath}
+              width={50}
+              height={50}
+              style={{ height: `${scaledSize}px` }} 
+              alt="Draggable bead"
+              onPointerUp={() => {
+                // show item menu on click and after a drag 
+                console.log("dragId: " + item.dragId);
+                setShowBeadMenu(prev => (prev === item.dragId ? null : item.dragId));
+                console.log("showBeadMenu: " + showBeadMenu);
+              }}
+            />
+          </div>
+          {isOpen && (
+            <BeadMenu beadId={item.dragId} diameter={item.diameter} price={item.price} 
+                      onMenuClick={onMenuClick}/>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
@@ -101,6 +101,8 @@ const JewelryMaker2 = () => {
   const [filters, setFilters] = useState({ colour: "", size: "", shape: "" });
   const [activeBead, setActiveBead] = useState(null); // active bead = the bead being dragged
   const [showResetWarning, setShowResetWarning] = useState(false);
+  const [showBeadMenu, setShowBeadMenu] = useState(null);
+  const [showTypeModal, setShowTypeModal] = useState(false);
 
   // fetch beads from db & put into an array
   useEffect(() => {
@@ -114,7 +116,11 @@ const JewelryMaker2 = () => {
   }, [filters]);
 
   const sensors = useSensors(
-    useSensor(MouseSensor), 
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    }), 
     useSensor(TouchSensor, {
       activationConstraint: {
         delay: 200, // Requires hold for 200ms before dragging starts
@@ -137,22 +143,6 @@ const JewelryMaker2 = () => {
     setActiveBead(null); // clear DragOverlay state when dragging ends
 
     if (!over) return;
-
-    // If dropped in trash bin, delete the bead
-    if (over.id === "delete-zone") {
-      setSelectedBeads((prev) => prev.filter((item) => item.dragId !== active.id));
-
-      // Update totals
-      setTotal(() => {
-        if (selectedBeads.length == 1) {
-          return 0;
-        } else {
-          return (totalSum(selectedBeads.filter((item) => item.dragId !== active.id)) / 100) + 5;
-        }
-      });
-      setLength(totalLength(selectedBeads.filter((item) => item.dragId !== active.id)));
-      return;
-    }
 
     if (active.id !== over.id) {
       setSelectedBeads((items) => {
@@ -205,25 +195,47 @@ const JewelryMaker2 = () => {
     setShowResetWarning(false);
   }
 
+  const handleDeleteItem = (item) => {
+    setSelectedBeads((prev) => prev.filter((bead) => bead.dragId !== item.dragId));
+
+    // Update totals
+    setTotal(() => {
+      if (selectedBeads.length == 1) {
+        return 0;
+      } else {
+        return (totalSum(selectedBeads.filter((bead) => bead.dragId !== item.dragId)) / 100) + 5;
+      }
+    });
+    setLength(totalLength(selectedBeads.filter((bead) => bead.dragId !== item.dragId)));
+    return;
+  };
+
   return(
     <div className="overscroll-hidden relative flex flex-col-reverse md:flex-row w-screen font-inclusiveSans text-textDark">
       {/* Side bar */}
-      <section className="flex flex-col bg-background h-dvh md:min-w-[480px] md:w-auto shrink-0 md:p-6 absolute md:static top-[50vh]">
-        <div className="hidden md:block mb-4">
-          <Header/>
+      <section className="fixed flex flex-col bg-background w-fit place-self-center md:place-self-auto md:min-w-[480px] md:w-auto shrink-0 md:pt-6 md:px-6 md:static top-[50vh]">
+        <div className="hidden md:block md:mb-5 md:mt-3">
+          <Header />
         </div>
-        <div className="fixed w-full px-2 md:pr-0 md:static flex items-center justify-between text-sm mt-2 mb-4 text-textDark">
-          <FilterBar filters={filters} setFilters={setFilters} />
-          {/* <button className="group flex gap-2 items-center text-textDark">
-            <p className="underline group-hover:no-underline">Recommended</p>
-            <Image src={dropdownArrow} alt="" aria-hidden="true" />
-          </button> */}
+        <div className="w-full md:pr-0 md:static flex items-center justify-end md:justify-between text-sm my-2 md:mb-4 text-textDark">
+          <div className="hidden md:block">
+            <FilterBar filters={filters} setFilters={setFilters} />
+            {/* <button className="group flex gap-2 items-center text-textDark">
+              <p className="underline group-hover:no-underline">Recommended</p>
+              <Image src={dropdownArrow} alt="" aria-hidden="true" />
+            </button> */}
+          </div>
+          <button className="flex md:hidden items-center gap-2 h-fit bg-[#FDF8F3] px-3 py-2 rounded-xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75"
+                  onClick={() => setShowTypeModal(true)}>
+            <p>Keychain</p>
+            <DropdownArrow />
+          </button>
         </div>
-        <div className="grow fixed w-full h-[50vh] md:static">
-          <div className="grid place-self-center grid-cols-3 gap-2 max-h-full overflow-y-auto pb-20 md:pb-0 mt-12 md:mt-0">
+        <div className="grow grid w-full h-[50vh] md:static">
+          <div className="grid place-self-center w-fit grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 md:mt-0">
             {Array.isArray(beads) &&
               beads.map((item) => (
-              <div key={item.id}>
+              <div key={item.id} className="grid place-self-center">
                 <BeadBox
                   onClick={(e) => handleAddItem(item, e)}
                   id={item.id}
@@ -238,54 +250,40 @@ const JewelryMaker2 = () => {
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow flex flex-col h-[50vh] md:h-[100vh] p-2 md:p-6 bg-[url('/dot-grid.svg')] bg-repeat">
-        <div className="md:hidden block p-2">
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow h-[50vh] md:h-[100vh] flex flex-col bg-[url('/dot-grid.svg')] bg-repeat [-webkit-touch-callout:none] [-webkit-user-drag:none] [ -webkit-user-select:none ] select-none ">
+        <div className="absolute md:hidden block p-2">
           <Header />
         </div>
-        <div className="z-10 absolute pt-20 h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
-          <div className="hidden md:flex gap-3">
-            <button className="cursor-default bg-[#FDF8F3] px-5 py-2 rounded-2xl border-[1.5px] border-textDark hover:border-primaryDark hover:text-primaryDark transition duration-75">
-              Keychain
-            </button>
-            <div className="group flex-col relative">
-              <button disabled className=" bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">
-              Earrings
-              <div data-tooltip="tooltip" data-tooltip-placement="{bottom}" className="absolute left-1 -bottom-8 text-textDark/65 text-sm bg-backgroundDark p-1 rounded-md opacity-0 group-hover:opacity-100 transition ease-in-out duration-300 delay-500">
-                coming soon!
-              </div>
-              </button>
-            </div>
-            {/* <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Bracelet</button>
-            <button disabled className="cursor-not-allowed bg-backgroundDark px-5 py-2 rounded-2xl border-[1.5px] border-textLight/40 text-textLight/40">Necklace</button> */}
+        <div className="absolute h-fit w-full bottom-0 md:top-0 p-2 md:p-6 right-0 flex justify-end md:items-start md:justify-between">
+          <div className="hidden md:block">
+            <JewelryTypes />
           </div>
-          <div className="flex-col flex items-end z-10">
+          <div className="flex flex-row-reverse justify-between w-full md:flex-col items-end z-10 user-select-none">
             <button
               onClick={handleOrderSubmit}
-              className={`px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
+              className={`flex gap-2 px-5 py-4 rounded-2xl transition ease-in-out duration-75 ${
                 selectedBeads.length === 0
                   ? "bg-backgroundDark cursor-not-allowed"
                   : "bg-secondary hover:bg-secondaryLight cursor-pointer"
               }`}
               disabled={selectedBeads.length === 0}
             >
-              Order <span className="font-sans">→</span>
+              <p className="hidden md:block">Order</p>
+              <span className="font-sans">→</span>
             </button>
-            <div>
-              <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline rounded-xl">
-                <p className="text-lg text-textDark">
-                  ${total.toFixed(2)}
-                </p>
-                <p className="text-base">{(length / 10).toFixed(1)} cm</p>
-              </div>
+            <div className="bg-backgroundDark/40 text-textLight mt-3 px-4 py-2 flex-col items-baseline text-left md:text-right rounded-xl">
+              <p className="text-base/tight text-textDark">
+                ${total.toFixed(2)}
+              </p>
+              <p className="text-sm">{(length / 10).toFixed(1)} cm</p>
             </div>
           </div>
         </div>
-        <div className="grow h-[40vh] md:h-[97vh] relative">
-          <div className="flex flex-col justify-center items-center h-full max-h-full p-10 overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="z-10 grow h-[40vh] md:h-[97vh] w-fit relative place-self-center">
+          <div className="flex flex-col justify-center items-center w-fit h-full max-h-full overflow-y-scroll px-32 -mx-32 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {/* DRAG AND DROP AREA */}
             <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}> 
-              <TrashBin/>
-              <Image className="w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
+              <Image className="w-[60px] md:w-[80px] m-1" src={lobsterClasp} width={400} height={400} alt="clasp"/>
               <SortableContext                                                                                                                                                                                                                                        
                 items={selectedBeads.map((item) => item.dragId)}
                 strategy={verticalListSortingStrategy}
@@ -294,8 +292,13 @@ const JewelryMaker2 = () => {
                   <SortableItem
                     key={item.dragId}
                     item={item}
-                    dragId={item.dragId}
                     activeBead={activeBead}
+                    showBeadMenu={showBeadMenu}
+                    setShowBeadMenu={setShowBeadMenu}
+                    onMenuClick={() => {
+                                  console.log("TRASH CLICKEDDD, id: " + item.dragId);
+                                  handleDeleteItem(item);
+                                }}
                   />
                 ))}
               </SortableContext>
@@ -304,7 +307,7 @@ const JewelryMaker2 = () => {
                 {activeBead ? (
                   <div className="w-full flex justify-center items-center pointer-events-none">
                     <Image
-                      className="w-auto h-auto object-cover place-self-center opacity-75"
+                      className="h-auto place-self-center opacity-75"
                       src={activeBead.imagePath}
                       width={400}
                       height={400}
@@ -316,34 +319,23 @@ const JewelryMaker2 = () => {
               </DragOverlay>
             </DndContext>
           </div>
+        </div>
 
-          {/* sandbox bead preview */}
-          {/* <div className="absolute top-0 left-0 flex gap-3 p-3 items-center bg-backgroundDark/60 text-sm rounded-2xl">
-            <p>(BEAD)</p>
-            <div className="justify-items-end">
-              <div className="">
-                <p>$0.75</p>
-                <p>4 mm</p>
-              </div>
-              <p className="text-textLight/40">#11520</p>
-            </div>
-          </div> */}
-
-          <div className="absolute bottom-0 w-full flex items-end justify-end md:mb-6">
-            <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
-              {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
-                <Image src={undoIcon} alt=""/> 
-              </button>
-              <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
-                <Image src={redoIcon} alt=""/> 
-              </button> */}
-              <button 
-                onClick={() => setShowResetWarning(selectedBeads.length > 0 ? true : false)}
-                className={`p-2 rounded-xl transition ease-in-out duration-75 ${selectedBeads.length === 0 ? "cursor-not-allowed" : "hover:bg-failRed/60"}`}
-              >
-                <Image src={xIcon} alt=""/>
-              </button>
-            </div>
+        <div className="absolute bottom-0 right-0 p-6 flex items-end justify-end">
+          <div className="bg-backgroundDark/60 md:flex h-fit items-center rounded-2xl hidden">
+          {/* undo/redo icons for later */}
+            {/* <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
+              <Image src={undoIcon} alt=""/> 
+            </button>
+            <button className="p-2 rounded-xl hover:bg-background transition ease-in-out duration-75">
+              <Image src={redoIcon} alt=""/> 
+            </button> */}
+            <button 
+              onClick={() => setShowResetWarning(selectedBeads.length > 0 ? true : false)}
+              className={`p-2 rounded-xl transition ease-in-out duration-75 ${selectedBeads.length === 0 ? "cursor-not-allowed" : "hover:bg-failRed/60"}`}
+            >
+              <XIcon />
+            </button>
           </div>
         </div>
       </section>
@@ -351,6 +343,11 @@ const JewelryMaker2 = () => {
         <ResetModal 
           onCancel={() => {setShowResetWarning(false)}}
           onConfirm={handleReset}
+        />
+      )}
+      {showTypeModal && (
+        <TypeModal 
+          onReturn={() => {setShowTypeModal(false)}}
         />
       )}
     </div>
@@ -383,6 +380,22 @@ const ResetModal = ({
           </button>
         </div>
       </div>
+    </div>
+  )
+};
+
+const TypeModal = ({
+  onReturn,
+}) => {
+  return(
+    <div className="fixed inset-0 flex flex-col items-center justify-center backdrop-blur-lg bg-opacity-30 bg-background z-50 space-y-6">
+      <div className="w-56 text-center space-y-3">
+        <h2 className="font-darumadrop text-2xl">Jewelry Type</h2>
+        <p className="text-base/5">Create a new type of jewelry! <br/> Selecting a new type will reset all progress. </p>
+      </div>
+      <JewelryTypes />
+      <p className="underline text-textLight"
+          onClick={onReturn}>Return to Maker</p>
     </div>
   )
 };
