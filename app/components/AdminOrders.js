@@ -65,8 +65,7 @@ const AdminOrders = () => {
   // get customers
   useEffect(() => {
     const run = async () => {
-      const res = await fetch("/api/customers", { method: "GET" });
-      const customers = await res.json();
+      const customers = await protectedFetch("/api/customers", { method: "GET" });
       setCustomers(customers);
     };
     run();
@@ -74,10 +73,9 @@ const AdminOrders = () => {
 
   useEffect(() => {
     const run = async () => {
-      const res = await fetch(`/api/orders/${viewOrdersBeads}/beads`, {
+      const ordersBeads = await protectedFetch(`/api/orders/${viewOrdersBeads}/beads`, {
         method: "GET",
       });
-      const ordersBeads = await res.json();
       setOrdersBeads(ordersBeads);
     };
     run();
