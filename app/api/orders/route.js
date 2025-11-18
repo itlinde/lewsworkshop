@@ -6,7 +6,7 @@ import { createDraftOrder } from "../../../lib/orderUtils";
 export async function GET(req) {
   try {
     const supabase = createClient();
-    const { data } = await supabase.from("orders").select().eq('is_active', 1);
+    const { data } = await supabase.from("orders").select().eq('is_active', 1).order('date_ordered', {ascending: false});
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
