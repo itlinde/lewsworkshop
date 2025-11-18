@@ -68,6 +68,9 @@ export async function POST(req) {
         shape: body.shape,
         stock: body.stock,
         price: body.price,
+        weight: body.weight,
+        material: body.material,
+        notes: body.notes,
       })
       .select()
       .single();

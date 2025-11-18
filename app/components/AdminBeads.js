@@ -255,7 +255,7 @@ const AdminBeads = () => {
               <div className="break-words">{bead.weight}</div>
               <div className="break-words">{bead.colour}</div>
               <div className="break-words">{bead.shape}</div>
-              <div className="break-words">{bead.materials}</div>
+              <div className="break-words">{bead.material}</div>
               <div className="break-words">{bead.notes}</div>
             </div>
           ))}
