@@ -101,6 +101,14 @@ const AdminOrders = () => {
                 className="p-3 grid grid-cols-6 gap-3 items-center border-b-[1.5px] border-primaryLight/50 hover:bg-primaryLight/10 transition duration-200"
               >
                 <div className="break-words">{order.id}</div>
+                <div className="break-words">
+                  {order.customer_id
+                    ? JoinOrdersCustomers(customers, order.customer_id)
+                    : "-"}
+                </div>
+                <div className="break-words">
+                  ${formatPrice(order.price).toFixed(2)}
+                </div>
                 <StatusStyling
                   status={order.status}
                   onClick={() => {
@@ -111,14 +119,6 @@ const AdminOrders = () => {
                   openStatusMenu={openStatusMenu === order.id}
                   orderId={order.id}
                 />
-                <div className="break-words">
-                  {order.customer_id
-                    ? JoinOrdersCustomers(customers, order.customer_id)
-                    : "-"}
-                </div>
-                <div className="break-words">
-                  ${formatPrice(order.price).toFixed(2)}
-                </div>
                 <div className="break-words">
                   {formatDate(order.date_ordered)}
                 </div>
