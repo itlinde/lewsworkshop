@@ -11,6 +11,9 @@ const AdminBeads = () => {
   const [shape, setShape] = useState("circle");
   const [stock, setStock] = useState("");
   const [price, setPrice] = useState("");
+  const [weight, setWeight] = useState("");
+  const [material, setMaterial] = useState("");
+  const [notes, setNotes] = useState("");
 
   const [imageFileDataUrl, setImageFileDataUrl] = useState("");
   const [imageFileType, setImageFileType] = useState("");
@@ -37,6 +40,9 @@ const AdminBeads = () => {
         shape: shape,
         stock: stock,
         price: price,
+        weight: weight,
+        material: material,
+        notes: notes,
       };
 
       setImageFileDataUrl("");
@@ -47,6 +53,9 @@ const AdminBeads = () => {
       setShape("circle");
       setStock("");
       setPrice("");
+      setWeight("");
+      setMaterial("");
+      setNotes("");
 
       protectedFetch("/api/beads", {
         method: "POST",
@@ -72,7 +81,7 @@ const AdminBeads = () => {
   return (
     <>
       <div className="font-inclusiveSans w-full flex flex-row gap-4">
-        <div className="w-96 h-[500px] bg-primaryLight py-8 flex flex-col justify-center gap-3 font-inclusiveSans rounded-xl shadow-lg border-4 border-primary/20">
+        <div className="w-96 h-fit bg-primaryLight py-8 flex flex-col justify-center gap-3 font-inclusiveSans rounded-xl shadow-lg border-4 border-primary/20">
           <p className="text-center">New bead:</p>
           <div
             {...getRootProps()}
@@ -165,7 +174,7 @@ const AdminBeads = () => {
             <option value="other">Other</option>
           </select>
           <input
-            type="text"
+            type="number"
             id="stock"
             name="stock"
             placeholder="Stock*"
@@ -173,6 +182,35 @@ const AdminBeads = () => {
             value={stock}
             onChange={(e) => setStock(e.target.value)}
             required
+          />
+          <input
+            type="number"
+            step="0.1"
+            id="weight"
+            name="weight"
+            placeholder="Weight"
+            className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            id="material"
+            name="material"
+            placeholder="Material"
+            className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none"
+            value={material}
+            onChange={(e) => setMaterial(e.target.value)}
+          />
+          <input
+            type="text"
+            id="notes"
+            name="notes"
+            placeholder="Notes"
+            className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
           />
           <button
             className="bg-primary mx-10 p-2 rounded-full text-white"
@@ -182,37 +220,43 @@ const AdminBeads = () => {
           </button>
         </div>
         <div className="w-full max-w-screen-lg bg-background rounded-xl shadow-lg overflow-hidden">
-          <div className="bg-primary text-background p-4 grid grid-cols-8 gap-4 font-medium">
+          <div className="bg-primary text-background p-4 grid grid-cols-11 gap-4 font-medium">
             <div>Bead ID</div>
             <div>Image</div>
             <div>Name</div>
+            <div>Stock</div>
             <div>Diameter (mm)</div>
-            <div>Price ($CAD)</div>
+            <div>Price (cents)</div>
+            <div>Weight</div>
             <div>Colour</div>
             <div>Shape</div>
-            <div>Stock</div>
+            <div>Material</div>
+            <div>Notes</div>
           </div>
 
           {beads?.map((bead) => (
             <div
               key={bead.id}
-              className="p-4 grid grid-cols-8 gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
+              className="p-4 grid grid-cols-11 text-sm gap-4 border-b border-primaryLight hover:bg-primaryLight/10 transition duration-200"
             >
               <div className="break-words">{bead.id}</div>
               <Image
                 src={bead.image_path}
                 width={300}
                 height={300}
-                style={{ height: `${bead.diameter_mm * 8}px` }}
+                style={{ height: `${bead.diameter_mm * 5}px` }}
                 alt="bead"
                 className="w-auto h-auto object-contain"
               />
               <div className="break-words">{bead.name}</div>
+              <div className="break-words">{bead.stock}</div>
               <div className="break-words">{bead.diameter_mm}</div>
               <div className="break-words">{bead.price}</div>
+              <div className="break-words">{bead.weight}</div>
               <div className="break-words">{bead.colour}</div>
               <div className="break-words">{bead.shape}</div>
-              <div className="break-words">{bead.stock}</div>
+              <div className="break-words">{bead.material}</div>
+              <div className="break-words">{bead.notes}</div>
             </div>
           ))}
         </div>
