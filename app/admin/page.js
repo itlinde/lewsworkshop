@@ -18,7 +18,7 @@ export default function Home() {
       }
     };
     checkPassword();
-  }, [password, verifyPassword]);
+  }, [password]);
 
   return !entered ? (
     <div className="">

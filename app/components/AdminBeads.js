@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { protectedFetch } from "../../lib/protectedFetch";
+import { COLORS, SHAPES } from "../../lib/constants";
 
 const AdminBeads = () => {
   const [beads, setBeads] = useState([]);
@@ -45,6 +46,17 @@ const AdminBeads = () => {
         notes: notes,
       };
 
+      const result = await protectedFetch("/api/beads", {
+        method: "POST",
+        body: JSON.stringify(beadData),
+      });
+
+      if (result.error) {
+        console.error("Error creating bead:", result.error);
+        alert("Failed to create bead: " + result.error);
+        return;
+      }
+
       setImageFileDataUrl("");
       setImageFileType("");
       setName("");
@@ -57,12 +69,12 @@ const AdminBeads = () => {
       setMaterial("");
       setNotes("");
 
-      protectedFetch("/api/beads", {
-        method: "POST",
-        body: JSON.stringify(beadData),
-      });
+      const res = await fetch("/api/beads", { method: "GET" });
+      const updatedBeads = await res.json();
+      setBeads(updatedBeads);
     } catch (error) {
       console.error("Error creating bead:", error);
+      alert("Failed to create bead. Please try again.");
     }
   };
 
@@ -141,19 +153,11 @@ const AdminBeads = () => {
             onChange={(e) => setColour(e.target.value)}
             className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none "
           >
-            <option value="red">Red</option>
-            <option value="orange">Orange</option>
-            <option value="yellow">Yellow</option>
-            <option value="green">Green</option>
-            <option value="blue">Blue</option>
-            <option value="purple">Purple</option>
-            <option value="pink">Pink</option>
-            <option value="white">White</option>
-            <option value="grey">Grey</option>
-            <option value="black">Black</option>
-            <option value="clear">Clear</option>
-            <option value="clear">Pearl</option>
-            <option value="mixed">Mixed</option>
+            {COLORS.map((color) => (
+              <option key={color.value} value={color.value}>
+                {color.label}
+              </option>
+            ))}
           </select>
           <select
             id="shape"
@@ -162,16 +166,11 @@ const AdminBeads = () => {
             onChange={(e) => setShape(e.target.value)}
             className="rounded-lg p-1 mx-10 focus:outline-primary focus:outline-offset-0 focus:outline-none "
           >
-            <option value="circle">Circle</option>
-            <option value="oval">Oval</option>
-            <option value="heart">Heart</option>
-            <option value="butterfly">Butterfly</option>
-            <option value="star">Star</option>
-            <option value="flower">Flower</option>
-            <option value="cube">Cube</option>
-            <option value="cube">Natural</option>
-            <option value="teardrop">Teardrop</option>
-            <option value="other">Other</option>
+            {SHAPES.map((shape) => (
+              <option key={shape.value} value={shape.value}>
+                {shape.label}
+              </option>
+            ))}
           </select>
           <input
             type="number"
