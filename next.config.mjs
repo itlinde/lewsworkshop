@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "khabgimuwkhexobpwhxs.supabase.co",
-      "waagstbitqshrscmxriq.supabase.co",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "khabgimuwkhexobpwhxs.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "waagstbitqshrscmxriq.supabase.co",
+      },
     ],
   },
   async headers() {
@@ -22,13 +28,13 @@ const nextConfig = {
       },
     ];
   },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,       // only when imported from JS/TS
-      use: ['@svgr/webpack'],
-    });
-    return config;
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
   },
 };
 
