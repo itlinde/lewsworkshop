@@ -103,14 +103,17 @@ const JewelryMaker2 = () => {
   const [showResetWarning, setShowResetWarning] = useState(false);
   const [showBeadMenu, setShowBeadMenu] = useState(null);
   const [showTypeModal, setShowTypeModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // fetch beads from db & put into an array
   useEffect(() => {
     const run = async () => {
+      setIsLoading(true);
       const queryParams = new URLSearchParams(filters).toString();
       const res = await fetch(`/api/beads?${queryParams}`);
       const beadsData = await res.json();
       setBeads(beadsData);
+      setIsLoading(false);
     };
     run();
   }, [filters]);
@@ -233,24 +236,33 @@ const JewelryMaker2 = () => {
         </div>
         <div className="grow grid w-full h-[50vh] md:static">
           <div className="grid place-self-center w-fit grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 md:mt-0">
-            {Array.isArray(beads) &&
-              beads.map((item) => (
-              <div key={item.id} className="grid place-self-center">
-                <BeadBox
-                  onClick={(e) => handleAddItem(item, e)}
-                  id={item.id}
-                  imagePath={item.image_path}
-                  price={item.price}
-                  diameter={item.diameter_mm}
-                />
-              </div>
-            ))}
+            {isLoading ? (
+
+              Array.from({ length: 9 }).map((_, index) => (
+                <div key={`loading-${index}`} className="grid place-self-center">
+                  <LoadingBeadBox />
+                </div>
+              ))
+            ) : (
+              Array.isArray(beads) &&
+                beads.map((item) => (
+                <div key={item.id} className="grid place-self-center">
+                  <BeadBox
+                    onClick={(e) => handleAddItem(item, e)}
+                    id={item.id}
+                    imagePath={item.image_path}
+                    price={item.price}
+                    diameter={item.diameter_mm}
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
 
       {/* Main Canvas */}
-      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow h-[50vh] md:h-[100vh] flex flex-col bg-[url('/dot-grid.svg')] bg-repeat [-webkit-touch-callout:none] [-webkit-user-drag:none] [ -webkit-user-select:none ] select-none ">
+      <section className="fixed w-[100vw] top-0 md:relative border-[1.5px] border-backgroundDark bg-backgroundDark/15 md:grow h-[50vh] md:h-[100vh] flex flex-col bg-[url('/dot-grid.svg')] bg-repeat bg-[length:20px_20px] [-webkit-touch-callout:none] [-webkit-user-drag:none] [ -webkit-user-select:none ] select-none ">
         <div className="absolute md:hidden block p-2">
           <Header />
         </div>
@@ -356,6 +368,18 @@ const JewelryMaker2 = () => {
 
 export default JewelryMaker2;
 
+const LoadingBeadBox = () => {
+  return (
+    <div className="grid size-28 md:size-36 border-backgroundDark border-[1.5px] place-content-center rounded-xl text-center bg-backgroundDark/10 animate-pulse">
+      <div className="relative w-12 h-12 grid place-items-center">
+        <svg className="animate-spin" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="#7A736B" strokeOpacity="0.3" strokeWidth="2"/>
+          <path d="M12 2C6.47715 2 2 6.47715 2 12" stroke="#7A736B" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </div>
+    </div>
+  );
+};
 
 const ResetModal = ({
   onConfirm,
