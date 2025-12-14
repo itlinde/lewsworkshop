@@ -159,35 +159,6 @@ const JewelryMaker = () => {
 
   const handleOrderSubmit = async () => {
     try {
-      // const customerRes = await fetch("/api/customers", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     name: "test",
-      //     email: "john.doe@example.com",
-      //   }),
-      // });
-      // const customerResData = await customerRes.json();
-      // const customerId = customerResData.id;
-      // await fetch("/api/orders", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     total: "2",
-      //     delivery_method: deliveryMethod,
-      //     country: "CA",
-      //     address: "123 Main St",
-      //     postal_code: "12345",
-      //     status: status,
-      //     customer_id: customerId,
-      //     beads: selectedBeads,
-      //   }),
-      // });
-
-      // const form = document.createElement("form");
-      // form.method = "POST";
-      // form.action = "/api/checkout";
-      // document.body.appendChild(form);
-      // form.submit();
-
       const response = await fetch("/api/checkout", {
         method: "POST",
         body: JSON.stringify({

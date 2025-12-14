@@ -17,7 +17,7 @@ const LEWS_RESTRICTIONS = {
 
 // api checkout doesnt need protection because its all handled by the geniuses at stripe
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
   const method = request.method;
 
