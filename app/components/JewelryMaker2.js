@@ -251,9 +251,15 @@ const JewelryMaker2 = () => {
           </button>
         </div>
         <div className="grow grid w-full h-[50vh] md:static">
-          <div className="grid place-self-center w-fit grid-cols-3 gap-2 max-h-full overflow-y-scroll pb-20 md:pb-6 md:mt-0">
+          <div
+            className={`grid justify-self-center self-start w-fit grid-cols-3 gap-2 max-h-full pb-20 md:pb-6 md:mt-0 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-backgroundDark/30 [&::-webkit-scrollbar-track]:rounded-full ${
+              isLoading
+                ? "[&::-webkit-scrollbar-thumb]:bg-transparent"
+                : "[&::-webkit-scrollbar-thumb]:bg-textLight/40 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb:hover]:bg-textLight/60"
+            }`}
+          >
             {isLoading
-              ? Array.from({ length: 9 }).map((_, index) => (
+              ? Array.from({ length: 67 }).map((_, index) => (
                   <div
                     key={`loading-${index}`}
                     className="grid place-self-center"
